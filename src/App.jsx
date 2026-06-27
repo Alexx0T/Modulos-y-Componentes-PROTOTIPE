@@ -4,7 +4,7 @@ import { useCatalogStore } from './store/useCatalogStore.js'
 import { DynamicBrandingProvider, getContrastRatio } from './components/DynamicBrandingProvider.jsx'
 import { SchemaFormGenerator } from './components/SchemaFormGenerator.jsx'
 import { AgentChatInterface } from './components/AgentChatInterface.jsx'
-import { TapShieldModal } from './components/TapShieldModal.jsx'
+import { TapShield } from './components/TapShield.jsx'
 import { DigitalClock } from './components/DigitalClock.jsx'
 import { ComponentCalendar } from './components/ComponentCalendar.jsx'
 import QuantitySelector from './components/QuantitySelector.jsx'
@@ -553,7 +553,7 @@ function App() {
 
                     {activeComponent === 'tapshield' && (
                       <div className="prose prose-invert max-w-none space-y-6">
-                        <h3 className="text-xl font-bold text-zinc-100">Modal Tap-Shield Mobile-First (TapShieldModal)</h3>
+                        <h3 className="text-xl font-bold text-zinc-100">Modal Tap-Shield Mobile-First (TapShield)</h3>
                         <p className="text-sm text-zinc-400">Componente de interfaz para renderizar modales flotantes mediante React Portals, bloqueando scrolls y clicks externos.</p>
                         
                         <h4 className="text-sm font-bold text-zinc-300">1. Propósito y Casos de Uso</h4>
@@ -598,13 +598,13 @@ function App() {
           </section>
         </main>
 
-        <TapShieldModal
+        <TapShield
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           title="Prueba de Tap-Shield & Portal"
         >
           <p className="text-zinc-300">Esta ventana flotante utiliza React Portals para montarse directamente en la raíz del documento.</p>
-        </TapShieldModal>
+        </TapShield>
 
         <footer className="border-t border-zinc-900 bg-zinc-950 py-6 text-center text-xs text-zinc-500 font-mono">
           PROTOTIPE Multitenant SaaS Component Library & Catalog © 2026

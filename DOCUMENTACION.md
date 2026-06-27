@@ -166,12 +166,12 @@ const MiVista = () => {
 
 ---
 
-### G. TapShieldModal (Modal Seguro Tap-Shield)
+### G. TapShield (Modal Seguro Tap-Shield)
 Renderiza un modal flotante seguro mediante React Portals en la raíz del documento para interceptar interacciones externas.
 
 #### Importación e Instanciación
 ```tsx
-import { TapShieldModal } from './components/TapShieldModal'
+import { TapShield } from './components/TapShield'
 
 const App = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -179,13 +179,13 @@ const App = () => {
   return (
     <>
       <button onClick={() => setIsOpen(true)}>Abrir Modal</button>
-      <TapShieldModal
+      <TapShield
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
         title="Título del Modal"
       >
         <p>Contenido del modal...</p>
-      </TapShieldModal>
+      </TapShield>
     </>
   )
 }

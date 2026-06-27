@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 
-export const TapShieldModal = ({
+export const TapShield = ({
   isOpen,
   onClose,
   title,

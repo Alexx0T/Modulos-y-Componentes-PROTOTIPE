@@ -1,4 +1,4 @@
-# Modal Tap-Shield Mobile-First (TapShieldModal)
+# Modal Tap-Shield Mobile-First (TapShield)
 
 Componente de interfaz reutilizable para renderizar modales flotantes (overlays) mediante React Portals en la raíz del documento, interceptando interacciones externas no deseadas.
 
@@ -30,13 +30,13 @@ Componente de interfaz reutilizable para renderizar modales flotantes (overlays)
 
 ---
 
-## 4. Código React Fuente Completo (`TapShieldModal.jsx`)
+## 4. Código React Fuente Completo (`TapShield.jsx`)
 ```jsx
 import React, { useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 
-export const TapShieldModal = ({
+export const TapShield = ({
   isOpen,
   onClose,
   title,
@@ -103,6 +103,6 @@ export const TapShieldModal = ({
 ---
 
 ## 5. Origen
-* **Extraído de:** `src/components/TapShieldModal.jsx`
+* **Extraído de:** `src/components/TapShield.jsx`
 * **Fecha de extracción:** 2026-06-27
 * **Versión:** 1.0 (Integrado con React Portals y Framer Motion).
