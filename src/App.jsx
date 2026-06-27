@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useCatalogStore } from './store/useCatalogStore.js'
 import { DynamicBrandingProvider, getContrastRatio } from './components/DynamicBrandingProvider.jsx'
@@ -32,17 +32,7 @@ function App() {
   const [activeTab, setActiveTab] = useState('preview')
   const [qtyValue, setQtyValue] = useState(3)
 
-  const navScrollRef = useRef(null)
 
-  const scrollNav = (direction) => {
-    if (navScrollRef.current) {
-      const scrollAmount = 150
-      navScrollRef.current.scrollBy({
-        left: direction === 'left' ? -scrollAmount : scrollAmount,
-        behavior: 'smooth'
-      })
-    }
-  }
 
   useEffect(() => {
     setSchemaText(formSchema)
@@ -123,14 +113,8 @@ function App() {
           
           <div className="flex items-center space-x-4">
             <button
-              onClick={() => setIsModalOpen(true)}
-              className="px-4 py-2 rounded-lg bg-zinc-900 border border-zinc-800 text-xs font-semibold text-zinc-200 hover:bg-zinc-800 hover:text-white transition-all cursor-pointer"
-            >
-              Test Mobile Tap Shield
-            </button>
-            <button
               onClick={resetBranding}
-              className="text-xs text-zinc-500 hover:text-primary transition-colors cursor-pointer"
+              className="px-4 py-2 rounded-lg bg-zinc-900 border border-zinc-800 text-xs font-semibold text-zinc-400 hover:bg-zinc-800 hover:text-white transition-all cursor-pointer"
             >
               Restablecer Branding
             </button>
@@ -141,6 +125,79 @@ function App() {
         <main className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-6 p-6 max-w-7xl w-full mx-auto">
           {/* Left Panel */}
           <section className="lg:col-span-4 space-y-6">
+            {/* Component List */}
+            <div className="rounded-2xl border border-zinc-900 bg-zinc-900/20 p-5 space-y-4">
+              <div>
+                <h2 className="text-xs font-bold tracking-wider text-zinc-400 uppercase">Componentes del Catálogo</h2>
+                <p className="text-[11px] text-zinc-500 mt-1">
+                  Explora y prueba la interactividad de los módulos del ecosistema.
+                </p>
+              </div>
+
+              <div className="flex flex-col space-y-1">
+                {registeredComponents.map((comp) => {
+                  const isActive = activeComponent === comp.id;
+                  return (
+                    <button
+                      key={comp.id}
+                      onClick={() => setActiveComponent(comp.id)}
+                      className={`w-full text-left px-3.5 py-3 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center justify-between border ${
+                        isActive
+                          ? 'bg-primary/10 border-primary/25 text-primary shadow shadow-primary/5'
+                          : 'border-transparent text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/40'
+                      }`}
+                    >
+                      <div className="flex items-center space-x-3">
+                        {comp.id === 'branding' && (
+                          <svg className="w-4 h-4 text-current" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M9.53 16.122a3 3 0 00-2.235 2.236m11.352-8.24a3 3 0 10-4.243-4.242L4.05 16.293a3 3 0 01-1.285.786l-2.083.694a1 1 0 00-1.185 1.185l.694 2.083c.2.6.47 1.15.825 1.637m15.885-16.73L13.5 12" />
+                          </svg>
+                        )}
+                        {comp.id === 'form' && (
+                          <svg className="w-4 h-4 text-current" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                          </svg>
+                        )}
+                        {comp.id === 'chat' && (
+                          <svg className="w-4 h-4 text-current" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                          </svg>
+                        )}
+                        {comp.id === 'clock' && (
+                          <svg className="w-4 h-4 text-current" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                        )}
+                        {comp.id === 'calendar' && (
+                          <svg className="w-4 h-4 text-current" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                          </svg>
+                        )}
+                        {comp.id === 'quantity' && (
+                          <svg className="w-4 h-4 text-current" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                        )}
+                        {comp.id === 'tapshield' && (
+                          <svg className="w-4 h-4 text-current" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                          </svg>
+                        )}
+                        <span className="truncate">{comp.name}</span>
+                      </div>
+                      <span className={`text-[9px] px-1.5 py-0.5 rounded border font-mono capitalize shrink-0 ${
+                        isActive 
+                          ? 'bg-primary/10 border-primary/20 text-primary' 
+                          : 'bg-zinc-950 border-zinc-900 text-zinc-500'
+                      }`}>
+                        {comp.category}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
             <div className="rounded-2xl border border-zinc-900 bg-zinc-900/20 p-6 space-y-6">
               <div>
                 <h2 className="text-sm font-bold tracking-wider text-zinc-400 uppercase">Inyección de Branding HSL</h2>
@@ -252,68 +309,47 @@ function App() {
 
           {/* Right Panel */}
           <section className="lg:col-span-8 flex flex-col space-y-6">
-            {/* Component Picker Navigation */}
-            <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between border-b border-zinc-900 pb-3 gap-3">
-              <div className="flex items-center space-x-1 flex-1 min-w-0 max-w-full md:max-w-md lg:max-w-lg">
-                <button
-                  type="button"
-                  onClick={() => scrollNav('left')}
-                  className="p-1.5 rounded-lg hover:bg-zinc-900 border border-zinc-800/80 text-zinc-400 hover:text-zinc-200 transition-all cursor-pointer flex-shrink-0"
-                >
-                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-                  </svg>
-                </button>
+            {/* Showcase Header */}
+            {(() => {
+              const activeCompInfo = registeredComponents.find(c => c.id === activeComponent) || {};
+              return (
+                <div className="flex flex-col md:flex-row md:items-center justify-between border-b border-zinc-900 pb-5 gap-4">
+                  <div className="space-y-1">
+                    <div className="flex items-center space-x-3">
+                      <h2 className="text-xl font-bold text-zinc-100 tracking-tight">{activeCompInfo.name}</h2>
+                      <span className="text-[10px] px-2 py-0.5 rounded bg-primary/10 border border-primary/20 text-primary font-mono capitalize">
+                        {activeCompInfo.category}
+                      </span>
+                    </div>
+                    <p className="text-xs text-zinc-400">{activeCompInfo.description}</p>
+                  </div>
 
-                <div
-                  ref={navScrollRef}
-                  className="flex flex-1 overflow-x-auto whitespace-nowrap space-x-1.5 p-1 rounded-xl bg-zinc-900/60 border border-zinc-800/80 scroll-smooth"
-                  style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-                >
-                  {['branding', 'form', 'chat', 'clock', 'calendar', 'quantity', 'tapshield'].map((id) => (
+                  {/* Preview vs Docs Switcher */}
+                  <div className="flex p-0.5 rounded-xl bg-zinc-900 border border-zinc-800 shrink-0 self-start md:self-auto">
                     <button
-                      key={id}
-                      onClick={() => setActiveComponent(id)}
-                      className={`px-3.5 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer flex-shrink-0 capitalize ${
-                        activeComponent === id ? 'bg-primary text-white shadow shadow-primary/20' : 'text-zinc-400 hover:text-zinc-200'
+                      onClick={() => setActiveTab('preview')}
+                      className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                        activeTab === 'preview'
+                          ? 'bg-zinc-800 text-zinc-100 shadow shadow-black/40'
+                          : 'text-zinc-500 hover:text-zinc-300'
                       }`}
                     >
-                      {id === 'branding' ? 'Theme Inspector' : id === 'chat' ? 'AI Chat Interface' : id === 'tapshield' ? 'Tap-Shield Modal' : id.replace(/([A-Z])/g, ' $1')}
+                      Visualizador
                     </button>
-                  ))}
+                    <button
+                      onClick={() => setActiveTab('docs')}
+                      className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                        activeTab === 'docs'
+                          ? 'bg-zinc-800 text-zinc-100 shadow shadow-black/40'
+                          : 'text-zinc-500 hover:text-zinc-300'
+                      }`}
+                    >
+                      Documentación
+                    </button>
+                  </div>
                 </div>
-
-                <button
-                  type="button"
-                  onClick={() => scrollNav('right')}
-                  className="p-1.5 rounded-lg hover:bg-zinc-900 border border-zinc-800/80 text-zinc-400 hover:text-zinc-200 transition-all cursor-pointer flex-shrink-0"
-                >
-                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                  </svg>
-                </button>
-              </div>
-
-              {/* Preview vs Docs Switcher */}
-              <div className="flex space-x-1">
-                <button
-                  onClick={() => setActiveTab('preview')}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
-                    activeTab === 'preview' ? 'bg-zinc-800 text-zinc-100' : 'text-zinc-500 hover:text-zinc-300'
-                  }`}
-                >
-                  Visualizador
-                </button>
-                <button
-                  onClick={() => setActiveTab('docs')}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
-                    activeTab === 'docs' ? 'bg-zinc-800 text-zinc-100' : 'text-zinc-500 hover:text-zinc-300'
-                  }`}
-                >
-                  Documentación
-                </button>
-              </div>
-            </div>
+              );
+            })()}
 
             {/* Showcase Stage */}
             <div className="flex-1 min-h-[500px]">
