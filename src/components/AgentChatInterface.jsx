@@ -1,22 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import type { Message } from '../store/useCatalogStore'
 
-interface AgentChatInterfaceProps {
-  messages: Message[]
-  onSendMessage: (text: string) => void
-  onClearChat: () => void
-  isTyping?: boolean
-}
-
-export const AgentChatInterface: React.FC<AgentChatInterfaceProps> = ({
+export const AgentChatInterface = ({
   messages,
   onSendMessage,
   onClearChat,
   isTyping = false
 }) => {
   const [input, setInput] = useState('')
-  const messagesEndRef = useRef<HTMLDivElement>(null)
+  const messagesEndRef = useRef(null)
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -26,7 +18,7 @@ export const AgentChatInterface: React.FC<AgentChatInterfaceProps> = ({
     scrollToBottom()
   }, [messages, isTyping])
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e) => {
     e.preventDefault()
     if (!input.trim()) return
     onSendMessage(input)
@@ -76,7 +68,6 @@ export const AgentChatInterface: React.FC<AgentChatInterfaceProps> = ({
                       : 'bg-primary text-white shadow-md shadow-primary/10'
                   }`}
                 >
-                  {/* Assistant Extra Details */}
                   {isAssistant && msg.status === 'executing' && msg.toolExecutions && (
                     <div className="mb-2 p-2.5 rounded-lg bg-zinc-950/60 border border-zinc-800 text-xs font-mono space-y-2">
                       <div className="text-primary flex items-center space-x-1.5">
@@ -107,13 +98,12 @@ export const AgentChatInterface: React.FC<AgentChatInterfaceProps> = ({
             )
           })}
 
-          {/* Typing indicator - CLS-safe structure */}
           {isTyping && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="flex justify-start min-h-[46px]" // Reserve height to avoid shifting layout
+              className="flex justify-start min-h-[46px]"
             >
               <div className="bg-zinc-900 border border-zinc-800 rounded-2xl px-4 py-3 flex items-center space-x-1">
                 <span className="w-2 h-2 rounded-full bg-zinc-500 animate-bounce" style={{ animationDelay: '0ms' }} />

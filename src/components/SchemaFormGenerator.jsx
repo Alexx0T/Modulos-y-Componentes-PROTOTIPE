@@ -1,53 +1,26 @@
 import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
-interface SchemaProperty {
-  type: 'string' | 'number' | 'boolean'
-  title?: string
-  description?: string
-  placeholder?: string
-  enum?: string[]
-  minimum?: number
-  maximum?: number
-  default?: any
-}
-
-interface JSONSchema {
-  title?: string
-  description?: string
-  type: string
-  required?: string[]
-  properties: Record<string, SchemaProperty>
-}
-
-interface SchemaFormGeneratorProps {
-  schemaJson: string
-  onSubmit?: (values: Record<string, any>) => void
-  onChange?: (values: Record<string, any>) => void
-}
-
-export const SchemaFormGenerator: React.FC<SchemaFormGeneratorProps> = ({
+export const SchemaFormGenerator = ({
   schemaJson,
   onSubmit,
   onChange,
 }) => {
-  const [schema, setSchema] = useState<JSONSchema | null>(null)
-  const [values, setValues] = useState<Record<string, any>>({})
-  const [errors, setErrors] = useState<Record<string, string>>({})
-  const [parseError, setParseError] = useState<string | null>(null)
+  const [schema, setSchema] = useState(null)
+  const [values, setValues] = useState({})
+  const [errors, setErrors] = useState({})
+  const [parseError, setParseError] = useState(null)
 
-  // Parse and initialize schema
   useEffect(() => {
     try {
-      const parsed = JSON.parse(schemaJson) as JSONSchema
+      const parsed = JSON.parse(schemaJson)
       if (!parsed.properties || typeof parsed.properties !== 'object') {
         throw new Error('El esquema debe contener un objeto "properties".')
       }
       setSchema(parsed)
       setParseError(null)
 
-      // Set default values
-      const initialValues: Record<string, any> = {}
+      const initialValues = {}
       Object.entries(parsed.properties).forEach(([key, prop]) => {
         if (prop.default !== undefined) {
           initialValues[key] = prop.default
@@ -61,17 +34,16 @@ export const SchemaFormGenerator: React.FC<SchemaFormGeneratorProps> = ({
       })
       setValues(initialValues)
       if (onChange) onChange(initialValues)
-    } catch (err: any) {
+    } catch (err) {
       setParseError(err.message || 'JSON de esquema inválido.')
       setSchema(null)
     }
   }, [schemaJson])
 
-  const handleInputChange = (key: string, value: any, property: SchemaProperty) => {
+  const handleInputChange = (key, value, property) => {
     const updatedValues = { ...values, [key]: value }
     setValues(updatedValues)
 
-    // Validate on change
     const updatedErrors = { ...errors }
     if (schema?.required?.includes(key) && !value && value !== 0 && value !== false) {
       updatedErrors[key] = `El campo "${property.title || key}" es obligatorio.`
@@ -94,12 +66,11 @@ export const SchemaFormGenerator: React.FC<SchemaFormGeneratorProps> = ({
     if (onChange) onChange(updatedValues)
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e) => {
     e.preventDefault()
     if (!schema) return
 
-    // Final validation
-    const validationErrors: Record<string, string> = {}
+    const validationErrors = {}
     schema.required?.forEach((key) => {
       const val = values[key]
       if (!val && val !== 0 && val !== false) {
@@ -156,7 +127,7 @@ export const SchemaFormGenerator: React.FC<SchemaFormGeneratorProps> = ({
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              className="flex flex-col space-y-1.5 min-h-[85px] relative" // CLS prevention: reserved min-height for input + errors
+              className="flex flex-col space-y-1.5 min-h-[85px] relative"
             >
               <label className="text-sm font-medium text-zinc-300 flex items-center">
                 {prop.title || key}
@@ -194,11 +165,10 @@ export const SchemaFormGenerator: React.FC<SchemaFormGeneratorProps> = ({
                   placeholder={prop.placeholder || ''}
                   value={values[key] !== undefined ? values[key] : ''}
                   onChange={(e) => handleInputChange(key, e.target.value, prop)}
-                  className="w-full px-4 py-2.5 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-100 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-all duration-200"
+                  className="w-full px-4 py-2.5 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-100 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary text-sm transition-all duration-200"
                 />
               )}
 
-              {/* CLS prevention: Reserve space for absolute warning to avoid shifting rest of fields */}
               <AnimatePresence>
                 {error && (
                   <motion.span

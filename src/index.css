@@ -38,6 +38,12 @@
 
   --color-background: hsl(var(--bg-h) var(--bg-s) var(--bg-l));
   --color-card: hsl(var(--card-h) var(--card-s) var(--card-l));
+  
+  /* Compatibility variables for extracted atomic components */
+  --color-surface: hsl(var(--bg-h) var(--bg-s) var(--bg-l));
+  --color-surface-2: hsl(var(--card-h) var(--card-s) var(--card-l));
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-text: #f3f4f6;
 }
 
 html, body {

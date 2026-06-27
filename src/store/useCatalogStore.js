@@ -1,55 +1,6 @@
 import { create } from 'zustand'
 
-export interface HSLColor {
-  h: number
-  s: number
-  l: number
-}
-
-export interface BrandingState {
-  primary: HSLColor
-  secondary: HSLColor
-  accent: HSLColor
-}
-
-export interface Message {
-  id: string
-  role: 'user' | 'assistant'
-  content: string
-  timestamp: string
-  status?: 'thinking' | 'done' | 'executing'
-  toolExecutions?: Array<{
-    name: string
-    params: Record<string, any>
-    output: string
-  }>
-}
-
-export interface RegisteredComponent {
-  id: string
-  name: string
-  date: string
-  description: string
-  category: string
-}
-
-interface CatalogState {
-  branding: BrandingState
-  activeComponent: 'branding' | 'form' | 'chat' | 'clock' | 'calendar'
-  chatMessages: Message[]
-  formSchema: string
-  formValues: Record<string, any>
-  registeredComponents: RegisteredComponent[]
-  setBranding: (branding: Partial<BrandingState>) => void
-  setActiveComponent: (component: 'branding' | 'form' | 'chat' | 'clock' | 'calendar') => void
-  addChatMessage: (msg: Message) => void
-  clearChat: () => void
-  setFormSchema: (schema: string) => void
-  setFormValues: (values: Record<string, any>) => void
-  resetBranding: () => void
-}
-
-const DEFAULT_BRANDING: BrandingState = {
+const DEFAULT_BRANDING = {
   primary: { h: 262, s: 83, l: 58 },
   secondary: { h: 217, s: 91, l: 60 },
   accent: { h: 330, s: 98, l: 60 }
@@ -87,7 +38,7 @@ const DEFAULT_SCHEMA = `{
   }
 }`
 
-export const useCatalogStore = create<CatalogState>((set) => ({
+export const useCatalogStore = create((set) => ({
   branding: DEFAULT_BRANDING,
   activeComponent: 'branding',
   chatMessages: [
@@ -106,7 +57,8 @@ export const useCatalogStore = create<CatalogState>((set) => ({
     { id: 'form', name: 'Dynamic Form Generator', date: '2026-06-26', description: 'Generador de formularios reactivos a partir de esquemas JSON.', category: 'UI Core' },
     { id: 'chat', name: 'AI Agent Chat Interface', date: '2026-06-26', description: 'Chat con acordeón para Tool Calls de IA y aceleración GPU.', category: 'AI Integration' },
     { id: 'clock', name: 'Digital Clock', date: '2026-06-27', description: 'Reloj digital sincronizado con zona horaria del cliente.', category: 'Utility' },
-    { id: 'calendar', name: 'Component Calendar', date: '2026-06-27', description: 'Calendario interactivo de lanzamientos y registro de componentes.', category: 'Core Dashboard' }
+    { id: 'calendar', name: 'Component Calendar', date: '2026-06-27', description: 'Calendario interactivo de lanzamientos y registro de componentes.', category: 'Core Dashboard' },
+    { id: 'quantity', name: 'Quantity Selector', date: '2026-06-06', description: 'Selector de cantidad atómico con botones circulares y límites de stock.', category: 'UI Atomic' }
   ],
   
   setBranding: (newBranding) => set((state) => {
@@ -116,7 +68,7 @@ export const useCatalogStore = create<CatalogState>((set) => ({
     Object.entries(updated).forEach(([key, color]) => {
       document.documentElement.style.setProperty(`--${key}-h`, `${color.h}`)
       document.documentElement.style.setProperty(`--${key}-s`, `${color.s}%`)
-      document.documentElement.style.setProperty(`--${key}-l`, `${color.l}%`)
+      document.documentElement.style.setProperty(`----${key}-l`, `${color.l}%`)
     })
     
     return { branding: updated }

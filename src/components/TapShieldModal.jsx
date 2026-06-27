@@ -2,22 +2,14 @@ import React, { useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 
-interface TapShieldModalProps {
-  isOpen: boolean
-  onClose: () => void
-  title: string
-  children: React.ReactNode
-}
-
-export const TapShieldModal: React.FC<TapShieldModalProps> = ({
+export const TapShieldModal = ({
   isOpen,
   onClose,
   title,
   children
 }) => {
-  // Support ESC key to close
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
+    const handleKeyDown = (e) => {
       if (e.key === 'Escape') onClose()
     }
     if (isOpen) {
@@ -36,7 +28,6 @@ export const TapShieldModal: React.FC<TapShieldModalProps> = ({
     <AnimatePresence>
       {isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          {/* Backdrop Tap-Shield */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -45,7 +36,6 @@ export const TapShieldModal: React.FC<TapShieldModalProps> = ({
             className="fixed inset-0 bg-black/85 backdrop-blur-md cursor-pointer"
           />
 
-          {/* Modal Container */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 15 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -53,7 +43,6 @@ export const TapShieldModal: React.FC<TapShieldModalProps> = ({
             transition={{ type: 'spring', damping: 25, stiffness: 350 }}
             className="w-full max-w-lg rounded-2xl border border-white/10 bg-zinc-950 p-6 shadow-2xl z-10 relative gpu-accelerated"
           >
-            {/* Close Button */}
             <button
               onClick={onClose}
               className="absolute top-4 right-4 text-zinc-400 hover:text-zinc-100 transition-colors p-1.5 rounded-lg hover:bg-white/5 cursor-pointer"
