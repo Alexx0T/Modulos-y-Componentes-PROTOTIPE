@@ -198,113 +198,125 @@ function App() {
               </div>
             </div>
 
-            <div className="rounded-2xl border border-zinc-900 bg-zinc-900/20 p-6 space-y-6">
-              <div>
-                <h2 className="text-sm font-bold tracking-wider text-zinc-400 uppercase">Inyección de Branding HSL</h2>
-                <p className="text-xs text-zinc-500 mt-1">
-                  Modifica las variables HSL dinámicas y observa cómo cambia toda la interfaz en tiempo real.
-                </p>
-              </div>
-
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-semibold text-zinc-300">Color Primario (Primary HSL)</span>
-                  <div className="w-4 h-4 rounded-full bg-primary" />
-                </div>
-                
-                <div className="space-y-3">
-                  <div>
-                    <div className="flex justify-between text-[11px] text-zinc-400 mb-1">
-                      <span>Hue (Matiz)</span>
-                      <span>{branding.primary.h}º</span>
+            <AnimatePresence initial={false}>
+              {activeComponent === 'branding' && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.25, ease: 'easeInOut' }}
+                  className="space-y-6 overflow-hidden"
+                >
+                  <div className="rounded-2xl border border-zinc-900 bg-zinc-900/20 p-6 space-y-6">
+                    <div>
+                      <h2 className="text-sm font-bold tracking-wider text-zinc-400 uppercase">Inyección de Branding HSL</h2>
+                      <p className="text-xs text-zinc-500 mt-1">
+                        Modifica las variables HSL dinámicas y observa cómo cambia toda la interfaz en tiempo real.
+                      </p>
                     </div>
-                    <input
-                      type="range" min="0" max="360"
-                      value={branding.primary.h}
-                      onChange={(e) => handleColorChange('primary', 'h', Number(e.target.value))}
-                      className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-primary"
-                    />
-                  </div>
 
-                  <div>
-                    <div className="flex justify-between text-[11px] text-zinc-400 mb-1">
-                      <span>Saturation (Saturación)</span>
-                      <span>{branding.primary.s}%</span>
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-semibold text-zinc-300">Color Primario (Primary HSL)</span>
+                        <div className="w-4 h-4 rounded-full bg-primary" />
+                      </div>
+                      
+                      <div className="space-y-3">
+                        <div>
+                          <div className="flex justify-between text-[11px] text-zinc-400 mb-1">
+                            <span>Hue (Matiz)</span>
+                            <span>{branding.primary.h}º</span>
+                          </div>
+                          <input
+                            type="range" min="0" max="360"
+                            value={branding.primary.h}
+                            onChange={(e) => handleColorChange('primary', 'h', Number(e.target.value))}
+                            className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-primary"
+                          />
+                        </div>
+
+                        <div>
+                          <div className="flex justify-between text-[11px] text-zinc-400 mb-1">
+                            <span>Saturation (Saturación)</span>
+                            <span>{branding.primary.s}%</span>
+                          </div>
+                          <input
+                            type="range" min="0" max="100"
+                            value={branding.primary.s}
+                            onChange={(e) => handleColorChange('primary', 's', Number(e.target.value))}
+                            className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-primary"
+                          />
+                        </div>
+
+                        <div>
+                          <div className="flex justify-between text-[11px] text-zinc-400 mb-1">
+                            <span>Lightness (Luminosidad)</span>
+                            <span>{branding.primary.l}%</span>
+                          </div>
+                          <input
+                            type="range" min="0" max="100"
+                            value={branding.primary.l}
+                            onChange={(e) => handleColorChange('primary', 'l', Number(e.target.value))}
+                            className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-primary"
+                          />
+                        </div>
+                      </div>
                     </div>
-                    <input
-                      type="range" min="0" max="100"
-                      value={branding.primary.s}
-                      onChange={(e) => handleColorChange('primary', 's', Number(e.target.value))}
-                      className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-primary"
-                    />
-                  </div>
 
-                  <div>
-                    <div className="flex justify-between text-[11px] text-zinc-400 mb-1">
-                      <span>Lightness (Luminosidad)</span>
-                      <span>{branding.primary.l}%</span>
+                    <div className="space-y-4 pt-4 border-t border-zinc-900">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-semibold text-zinc-300">Color Secundario (Secondary HSL)</span>
+                        <div className="w-4 h-4 rounded-full bg-secondary" />
+                      </div>
+                      
+                      <div className="space-y-3">
+                        <div>
+                          <div className="flex justify-between text-[11px] text-zinc-400 mb-1">
+                            <span>Hue</span>
+                            <span>{branding.secondary.h}º</span>
+                          </div>
+                          <input
+                            type="range" min="0" max="360"
+                            value={branding.secondary.h}
+                            onChange={(e) => handleColorChange('secondary', 'h', Number(e.target.value))}
+                            className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-secondary"
+                          />
+                        </div>
+                      </div>
                     </div>
-                    <input
-                      type="range" min="0" max="100"
-                      value={branding.primary.l}
-                      onChange={(e) => handleColorChange('primary', 'l', Number(e.target.value))}
-                      className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-primary"
-                    />
                   </div>
-                </div>
-              </div>
 
-              <div className="space-y-4 pt-4 border-t border-zinc-900">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-semibold text-zinc-300">Color Secundario (Secondary HSL)</span>
-                  <div className="w-4 h-4 rounded-full bg-secondary" />
-                </div>
-                
-                <div className="space-y-3">
-                  <div>
-                    <div className="flex justify-between text-[11px] text-zinc-400 mb-1">
-                      <span>Hue</span>
-                      <span>{branding.secondary.h}º</span>
+                  <div className="rounded-2xl border border-zinc-900 bg-zinc-900/20 p-6 space-y-4">
+                    <h2 className="text-sm font-bold tracking-wider text-zinc-400 uppercase">Validador de Contraste WCAG</h2>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="p-3.5 rounded-xl bg-zinc-950 border border-zinc-900">
+                        <div className="text-[10px] text-zinc-500 font-medium">Contraste vs Fondo Oscuro</div>
+                        <div className="text-lg font-bold mt-1 text-zinc-200">{primaryContrast.toFixed(2)}:1</div>
+                        <div className="mt-1">
+                          {primaryContrast >= 3.0 ? (
+                            <span className="text-[10px] font-bold text-emerald-400 px-2 py-0.5 rounded bg-emerald-950/30">Pasa WCAG AA</span>
+                          ) : (
+                            <span className="text-[10px] font-bold text-rose-400 px-2 py-0.5 rounded bg-rose-950/30">No Accesible</span>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="p-3.5 rounded-xl bg-zinc-950 border border-zinc-900">
+                        <div className="text-[10px] text-zinc-500 font-medium">Contraste vs Texto Claro</div>
+                        <div className="text-lg font-bold mt-1 text-zinc-200">{textContrast.toFixed(2)}:1</div>
+                        <div className="mt-1">
+                          {textContrast >= 3.0 ? (
+                            <span className="text-[10px] font-bold text-emerald-400 px-2 py-0.5 rounded bg-emerald-950/30">Pasa WCAG AA</span>
+                          ) : (
+                            <span className="text-[10px] font-bold text-rose-400 px-2 py-0.5 rounded bg-rose-950/30">No Accesible</span>
+                          )}
+                        </div>
+                      </div>
                     </div>
-                    <input
-                      type="range" min="0" max="360"
-                      value={branding.secondary.h}
-                      onChange={(e) => handleColorChange('secondary', 'h', Number(e.target.value))}
-                      className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-secondary"
-                    />
                   </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="rounded-2xl border border-zinc-900 bg-zinc-900/20 p-6 space-y-4">
-              <h2 className="text-sm font-bold tracking-wider text-zinc-400 uppercase">Validador de Contraste WCAG</h2>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="p-3.5 rounded-xl bg-zinc-950 border border-zinc-900">
-                  <div className="text-[10px] text-zinc-500 font-medium">Contraste vs Fondo Oscuro</div>
-                  <div className="text-lg font-bold mt-1 text-zinc-200">{primaryContrast.toFixed(2)}:1</div>
-                  <div className="mt-1">
-                    {primaryContrast >= 3.0 ? (
-                      <span className="text-[10px] font-bold text-emerald-400 px-2 py-0.5 rounded bg-emerald-950/30">Pasa WCAG AA</span>
-                    ) : (
-                      <span className="text-[10px] font-bold text-rose-400 px-2 py-0.5 rounded bg-rose-950/30">No Accesible</span>
-                    )}
-                  </div>
-                </div>
-
-                <div className="p-3.5 rounded-xl bg-zinc-950 border border-zinc-900">
-                  <div className="text-[10px] text-zinc-500 font-medium">Contraste vs Texto Claro</div>
-                  <div className="text-lg font-bold mt-1 text-zinc-200">{textContrast.toFixed(2)}:1</div>
-                  <div className="mt-1">
-                    {textContrast >= 3.0 ? (
-                      <span className="text-[10px] font-bold text-emerald-400 px-2 py-0.5 rounded bg-emerald-950/30">Pasa WCAG AA</span>
-                    ) : (
-                      <span className="text-[10px] font-bold text-rose-400 px-2 py-0.5 rounded bg-rose-950/30">No Accesible</span>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </section>
 
           {/* Right Panel */}
