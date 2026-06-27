@@ -1,0 +1,89 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+:root {
+  --font-sans: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  
+  /* Primary HSL (e.g. Electric Violet) */
+  --primary-h: 262;
+  --primary-s: 83%;
+  --primary-l: 58%;
+
+  /* Secondary HSL (e.g. Deep Ocean Blue) */
+  --secondary-h: 217;
+  --secondary-s: 91%;
+  --secondary-l: 60%;
+
+  /* Accent HSL (e.g. Neon Rose) */
+  --accent-h: 330;
+  --accent-s: 98%;
+  --accent-l: 60%;
+
+  /* Base Canvas colors for SaaS */
+  --bg-h: 220;
+  --bg-s: 20%;
+  --bg-l: 3%; /* Ultra Dark Mode base */
+
+  --card-h: 220;
+  --card-s: 20%;
+  --card-l: 7%;
+
+  /* Mapping to HSL functions for Tailwind integration */
+  --color-primary: hsl(var(--primary-h) var(--primary-s) var(--primary-l));
+  --color-primary-hover: hsl(var(--primary-h) var(--primary-s) calc(var(--primary-l) - 8%));
+  --color-secondary: hsl(var(--secondary-h) var(--secondary-s) var(--secondary-l));
+  --color-secondary-hover: hsl(var(--secondary-h) var(--secondary-s) calc(var(--secondary-l) - 8%));
+  --color-accent: hsl(var(--accent-h) var(--accent-s) var(--accent-l));
+  --color-accent-hover: hsl(var(--accent-h) var(--accent-s) calc(var(--accent-l) - 8%));
+
+  --color-background: hsl(var(--bg-h) var(--bg-s) var(--bg-l));
+  --color-card: hsl(var(--card-h) var(--card-s) var(--card-l));
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-background);
+  color: #f3f4f6;
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* Glassmorphism utility classes */
+.glass {
+  background: rgba(15, 17, 23, 0.45);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-premium {
+  background: linear-gradient(135deg, rgba(20, 24, 33, 0.7) 0%, rgba(10, 12, 18, 0.8) 100%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.gpu-accelerated {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  transform: translate3d(0, 0, 0);
+}
+
+/* Custom Scrollbar for premium dashboard feel */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(15, 17, 23, 0.2);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary);
+}
