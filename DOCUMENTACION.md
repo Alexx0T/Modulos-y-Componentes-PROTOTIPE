@@ -135,6 +135,70 @@ const MiVista = () => {
 
 ---
 
+### F. QuantitySelector (Selector de Cantidad)
+Componente atómico para el ajuste e incremento/decremento de cantidades de artículos con soporte de límites mínimos y máximos.
+
+#### Importación e Instanciación
+```tsx
+import QuantitySelector from './components/QuantitySelector'
+
+const MiVista = () => {
+  const [cantidad, setCantidad] = useState(3)
+  
+  return (
+    <QuantitySelector
+      value={cantidad}
+      onChange={setCantidad}
+      min={1}
+      max={10}
+      size="md"
+    />
+  )
+}
+```
+
+#### Props
+- `value` (`number`): Cantidad numérica actual.
+- `onChange` (`(value: number) => void`): Callback invocado al cambiar la cantidad.
+- `min` (`number`): Límite mínimo de selección (default: 1).
+- `max` (`number`): Límite máximo de selección (default: 10).
+- `size` (`string`): Tamaño de presentación: `"sm" | "md"` (default: `"md"`).
+
+---
+
+### G. TapShieldModal (Modal Seguro Tap-Shield)
+Renderiza un modal flotante seguro mediante React Portals en la raíz del documento para interceptar interacciones externas.
+
+#### Importación e Instanciación
+```tsx
+import { TapShieldModal } from './components/TapShieldModal'
+
+const App = () => {
+  const [isOpen, setIsOpen] = useState(false)
+  
+  return (
+    <>
+      <button onClick={() => setIsOpen(true)}>Abrir Modal</button>
+      <TapShieldModal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        title="Título del Modal"
+      >
+        <p>Contenido del modal...</p>
+      </TapShieldModal>
+    </>
+  )
+}
+```
+
+#### Props
+- `isOpen` (`boolean`): Bandera para indicar si el modal está abierto.
+- `onClose` (`() => void`): Callback para cerrar el modal.
+- `title` (`string`): Título en la cabecera del modal.
+- `children` (`ReactNode`): Contenido del cuerpo del modal.
+
+---
+
 ## 2. Flujo del Componente
 
 A continuación se ilustra el flujo de datos reactivo del ecosistema cuando un agente o usuario interactúa con los esquemas de personalización del tenant o configuraciones de formularios:

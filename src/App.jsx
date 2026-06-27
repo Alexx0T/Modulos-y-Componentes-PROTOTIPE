@@ -270,7 +270,7 @@ function App() {
                   className="flex flex-1 overflow-x-auto whitespace-nowrap space-x-1.5 p-1 rounded-xl bg-zinc-900/60 border border-zinc-800/80 scroll-smooth"
                   style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
                 >
-                  {['branding', 'form', 'chat', 'clock', 'calendar', 'quantity'].map((id) => (
+                  {['branding', 'form', 'chat', 'clock', 'calendar', 'quantity', 'tapshield'].map((id) => (
                     <button
                       key={id}
                       onClick={() => setActiveComponent(id)}
@@ -278,7 +278,7 @@ function App() {
                         activeComponent === id ? 'bg-primary text-white shadow shadow-primary/20' : 'text-zinc-400 hover:text-zinc-200'
                       }`}
                     >
-                      {id === 'branding' ? 'Theme Inspector' : id === 'chat' ? 'AI Chat Interface' : id.replace(/([A-Z])/g, ' $1')}
+                      {id === 'branding' ? 'Theme Inspector' : id === 'chat' ? 'AI Chat Interface' : id === 'tapshield' ? 'Tap-Shield Modal' : id.replace(/([A-Z])/g, ' $1')}
                     </button>
                   ))}
                 </div>
@@ -428,6 +428,21 @@ function App() {
                         </div>
                       </div>
                     )}
+
+                    {activeComponent === 'tapshield' && (
+                      <div className="p-8 rounded-2xl border border-zinc-900 bg-zinc-900/10 flex flex-col items-center justify-center space-y-6 min-h-[300px]">
+                        <div>
+                          <h3 className="text-lg font-bold text-zinc-100 text-center">Tap-Shield Modal (Playground)</h3>
+                          <p className="text-xs text-zinc-400 text-center mt-1">Este componente utiliza un Portal de React para renderizarse fuera del árbol del DOM principal.</p>
+                        </div>
+                        <button
+                          onClick={() => setIsModalOpen(true)}
+                          className="px-6 py-3 rounded-full bg-primary hover:bg-primary-hover text-white font-semibold text-sm transition-all shadow-lg shadow-primary/20 active:scale-95 cursor-pointer"
+                        >
+                          Abrir Modal de Prueba
+                        </button>
+                      </div>
+                    )}
                   </motion.div>
                 ) : (
                   <motion.div
@@ -530,6 +545,47 @@ function App() {
                               <td className="border border-zinc-800 p-2 font-mono">string</td>
                               <td className="border border-zinc-800 p-2 font-mono">"md"</td>
                               <td className="border border-zinc-800 p-2">Tamaño de presentación: "sm" | "md".</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    )}
+
+                    {activeComponent === 'tapshield' && (
+                      <div className="prose prose-invert max-w-none space-y-6">
+                        <h3 className="text-xl font-bold text-zinc-100">Modal Tap-Shield Mobile-First (TapShieldModal)</h3>
+                        <p className="text-sm text-zinc-400">Componente de interfaz para renderizar modales flotantes mediante React Portals, bloqueando scrolls y clicks externos.</p>
+                        
+                        <h4 className="text-sm font-bold text-zinc-300">1. Propósito y Casos de Uso</h4>
+                        <ul className="list-disc pl-5 text-xs text-zinc-400 space-y-1">
+                          <li>Captura de Taps: Intercepta interacciones exteriores previniendo interacciones fantasma en dispositivos móviles.</li>
+                          <li>Prevención de Desplazamientos: Bloquea temporalmente el scroll del body del documento mientras está abierto.</li>
+                        </ul>
+
+                        <h4 className="text-sm font-bold text-zinc-300">2. Props y API del Componente</h4>
+                        <table className="min-w-full text-xs text-zinc-400 border border-zinc-800">
+                          <thead>
+                            <tr className="bg-zinc-900">
+                              <th className="border border-zinc-800 p-2 text-left">Prop</th>
+                              <th className="border border-zinc-800 p-2 text-left">Tipo</th>
+                              <th className="border border-zinc-800 p-2 text-left">Descripción</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td className="border border-zinc-800 p-2 font-mono text-primary">isOpen</td>
+                              <td className="border border-zinc-800 p-2 font-mono">boolean</td>
+                              <td className="border border-zinc-800 p-2">Indica si el modal está abierto.</td>
+                            </tr>
+                            <tr>
+                              <td className="border border-zinc-800 p-2 font-mono text-primary">onClose</td>
+                              <td className="border border-zinc-800 p-2 font-mono">function</td>
+                              <td className="border border-zinc-800 p-2">Callback ejecutado para cerrar el modal.</td>
+                            </tr>
+                            <tr>
+                              <td className="border border-zinc-800 p-2 font-mono text-primary">title</td>
+                              <td className="border border-zinc-800 p-2 font-mono">string</td>
+                              <td className="border border-zinc-800 p-2">Título de la cabecera.</td>
                             </tr>
                           </tbody>
                         </table>

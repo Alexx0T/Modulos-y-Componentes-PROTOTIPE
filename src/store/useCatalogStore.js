@@ -58,7 +58,8 @@ export const useCatalogStore = create((set) => ({
     { id: 'chat', name: 'AI Agent Chat Interface', date: '2026-06-26', description: 'Chat con acordeón para Tool Calls de IA y aceleración GPU.', category: 'AI Integration' },
     { id: 'clock', name: 'Digital Clock', date: '2026-06-27', description: 'Reloj digital sincronizado con zona horaria del cliente.', category: 'Utility' },
     { id: 'calendar', name: 'Component Calendar', date: '2026-06-27', description: 'Calendario interactivo de lanzamientos y registro de componentes.', category: 'Core Dashboard' },
-    { id: 'quantity', name: 'Quantity Selector', date: '2026-06-06', description: 'Selector de cantidad atómico con botones circulares y límites de stock.', category: 'UI Atomic' }
+    { id: 'quantity', name: 'Quantity Selector', date: '2026-06-06', description: 'Selector de cantidad atómico con botones circulares y límites de stock.', category: 'UI Atomic' },
+    { id: 'tapshield', name: 'Tap-Shield Modal', date: '2026-06-27', description: 'Modal seguro con React Portals y backdrop oscurecido para mobile-first.', category: 'UI Atomic' }
   ],
   
   setBranding: (newBranding) => set((state) => {
@@ -68,7 +69,7 @@ export const useCatalogStore = create((set) => ({
     Object.entries(updated).forEach(([key, color]) => {
       document.documentElement.style.setProperty(`--${key}-h`, `${color.h}`)
       document.documentElement.style.setProperty(`--${key}-s`, `${color.s}%`)
-      document.documentElement.style.setProperty(`----${key}-l`, `${color.l}%`)
+      document.documentElement.style.setProperty(`--${key}-l`, `${color.l}%`)
     })
     
     return { branding: updated }
