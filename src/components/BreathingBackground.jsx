@@ -44,9 +44,11 @@ export function BreathingBackground({
   const springX = useSpring(mouseX, { stiffness: 60, damping: 20 })
   const springY = useSpring(mouseY, { stiffness: 60, damping: 20 })
 
-  // Transform outputs for inverted parallax movement
+  // Transform outputs for inverted and multi-layer parallax movement
   const springXInverted = useTransform(springX, (v) => -v)
   const springYInverted = useTransform(springY, (v) => -v)
+  const springXCenter = useTransform(springX, (v) => v * 0.4)
+  const springYCenter = useTransform(springY, (v) => v * 0.4)
 
   useEffect(() => {
     if (typeof window === 'undefined') return
@@ -56,7 +58,7 @@ export function BreathingBackground({
       const normX = (e.clientX / window.innerWidth) - 0.5
       const normY = (e.clientY / window.innerHeight) - 0.5
 
-      // Calculate translation range based on viewport dimensions to make it clearly visible (e.g. 12% of screen size)
+      // Calculate translation range based on viewport dimensions (e.g. 12% of screen size)
       const maxShiftX = window.innerWidth * 0.12
       const maxShiftY = window.innerHeight * 0.12
 
@@ -80,16 +82,15 @@ export function BreathingBackground({
       }}
       data-testid="breathing-background-container"
     >
-      {/* Blob 1 Parent (Interactive Mouse shift) */}
+      {/* Blob 1: Top-Left Corner (Color 1) */}
       <motion.div
         style={{
           x: springX,
           y: springY,
           willChange: 'transform',
         }}
-        className="absolute w-[50%] h-[50%] rounded-full opacity-70"
+        className="absolute top-[-25%] left-[-25%] w-[65vw] h-[65vh] rounded-full opacity-60"
       >
-        {/* Blob 1 Child (Autonomous Breathing scale/pos) */}
         <motion.div
           animate={{
             scale: safeScaleRange,
@@ -109,16 +110,15 @@ export function BreathingBackground({
         />
       </motion.div>
 
-      {/* Blob 2 Parent (Interactive Mouse shift - Inverted for Parallax depth) */}
+      {/* Blob 2: Bottom-Right Corner (Color 2) */}
       <motion.div
         style={{
           x: springXInverted,
           y: springYInverted,
           willChange: 'transform',
         }}
-        className="absolute w-[55%] h-[55%] rounded-full opacity-60"
+        className="absolute bottom-[-25%] right-[-25%] w-[65vw] h-[65vh] rounded-full opacity-55"
       >
-        {/* Blob 2 Child (Autonomous Breathing scale/pos) */}
         <motion.div
           animate={{
             scale: [safeScaleRange[1], safeScaleRange[0], safeScaleRange[1]],
@@ -126,13 +126,97 @@ export function BreathingBackground({
             y: [clampedMovement / 2, -clampedMovement / 2, clampedMovement / 2],
           }}
           transition={{
-            duration: clampedSpeed * 1.3,
+            duration: clampedSpeed * 1.2,
             repeat: Infinity,
             ease: "easeInOut"
           }}
           className="absolute inset-0 rounded-full gpu-accelerated"
           style={{
             background: `radial-gradient(circle, hsl(${c2.h} ${c2.s}% ${c2.l}%) 0%, transparent 70%)`,
+            willChange: 'transform',
+          }}
+        />
+      </motion.div>
+
+      {/* Blob 3: Top-Right Corner (Color 2) */}
+      <motion.div
+        style={{
+          x: springXInverted,
+          y: springY,
+          willChange: 'transform',
+        }}
+        className="absolute top-[-20%] right-[-20%] w-[55vw] h-[55vh] rounded-full opacity-45"
+      >
+        <motion.div
+          animate={{
+            scale: safeScaleRange,
+            x: [clampedMovement / 1.5, -clampedMovement / 1.5, clampedMovement / 1.5],
+            y: [-clampedMovement, clampedMovement, -clampedMovement],
+          }}
+          transition={{
+            duration: clampedSpeed * 1.4,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+          className="absolute inset-0 rounded-full gpu-accelerated"
+          style={{
+            background: `radial-gradient(circle, hsl(${c2.h} ${c2.s}% ${c2.l}%) 0%, transparent 70%)`,
+            willChange: 'transform',
+          }}
+        />
+      </motion.div>
+
+      {/* Blob 4: Bottom-Left Corner (Color 1) */}
+      <motion.div
+        style={{
+          x: springX,
+          y: springYInverted,
+          willChange: 'transform',
+        }}
+        className="absolute bottom-[-20%] left-[-20%] w-[55vw] h-[55vh] rounded-full opacity-45"
+      >
+        <motion.div
+          animate={{
+            scale: [safeScaleRange[1], safeScaleRange[0], safeScaleRange[1]],
+            x: [-clampedMovement, clampedMovement, -clampedMovement],
+            y: [clampedMovement, -clampedMovement, clampedMovement],
+          }}
+          transition={{
+            duration: clampedSpeed * 1.1,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+          className="absolute inset-0 rounded-full gpu-accelerated"
+          style={{
+            background: `radial-gradient(circle, hsl(${c1.h} ${c1.s}% ${c1.l}%) 0%, transparent 70%)`,
+            willChange: 'transform',
+          }}
+        />
+      </motion.div>
+
+      {/* Blob 5: Center Glow (Soft Blend bridge) */}
+      <motion.div
+        style={{
+          x: springXCenter,
+          y: springYCenter,
+          willChange: 'transform',
+        }}
+        className="absolute top-[20%] left-[20%] w-[60vw] h-[60vh] rounded-full opacity-20"
+      >
+        <motion.div
+          animate={{
+            scale: [0.9, 1.15, 0.9],
+            x: [-clampedMovement / 3, clampedMovement / 3, -clampedMovement / 3],
+            y: [-clampedMovement / 3, clampedMovement / 3, -clampedMovement / 3],
+          }}
+          transition={{
+            duration: clampedSpeed * 1.8,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+          className="absolute inset-0 rounded-full gpu-accelerated"
+          style={{
+            background: `radial-gradient(circle, hsl(${c1.h} ${c1.s}% ${c1.l}%) 0%, transparent 80%)`,
             willChange: 'transform',
           }}
         />
