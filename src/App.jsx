@@ -113,9 +113,23 @@ function App() {
 
   return (
     <DynamicBrandingProvider primary={branding.primary}>
-      <div className="min-h-screen bg-zinc-950 text-zinc-100 flex flex-col antialiased">
-        {/* Header */}
-        <header className="border-b border-zinc-900 bg-zinc-950/80 sticky top-0 z-40 backdrop-blur-md px-6 py-4 flex items-center justify-between">
+      <div className="relative min-h-screen bg-zinc-950 text-zinc-100 flex flex-col antialiased overflow-x-hidden">
+        {/* Global Page Background */}
+        <BreathingBackground
+          color1={backgroundConfig.color1}
+          color2={backgroundConfig.color2}
+          speed={backgroundConfig.speed}
+          blur={backgroundConfig.blur}
+          opacity={backgroundConfig.opacity}
+          movementRange={backgroundConfig.movementRange}
+          scaleRange={[backgroundConfig.scaleMin, backgroundConfig.scaleMax]}
+          className="fixed inset-0 z-0 pointer-events-none"
+        />
+
+        {/* Global Content Wrapper (stacked above background) */}
+        <div className="relative z-10 flex flex-col min-h-screen">
+          {/* Header */}
+          <header className="border-b border-zinc-900 bg-zinc-950/60 sticky top-0 z-40 backdrop-blur-md px-6 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-primary to-accent flex items-center justify-center font-bold text-white shadow-md shadow-primary/20">
               P
@@ -143,7 +157,7 @@ function App() {
           {/* Left Panel */}
           <section className="lg:col-span-4 space-y-6">
             {/* Component List */}
-            <div className="rounded-2xl border border-zinc-900 bg-zinc-900/20 p-5 space-y-4">
+            <div className="rounded-2xl border border-zinc-900 bg-zinc-950/40 backdrop-blur-md p-5 space-y-4">
               <div>
                 <h2 className="text-xs font-bold tracking-wider text-zinc-400 uppercase">Componentes del Catálogo</h2>
                 <p className="text-[11px] text-zinc-500 mt-1">
@@ -336,7 +350,7 @@ function App() {
                     {activeComponent === 'branding' && (
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {/* Control Sliders Column */}
-                        <div className="p-6 rounded-2xl border border-zinc-900 bg-zinc-900/20 space-y-5">
+                        <div className="p-6 rounded-2xl border border-zinc-900 bg-zinc-950/40 backdrop-blur-md space-y-5">
                           <div>
                             <h3 className="text-xs font-bold tracking-wider text-zinc-400 uppercase">Ajustes de Branding HSL</h3>
                             <p className="text-xs text-zinc-500 mt-1">
@@ -418,7 +432,7 @@ function App() {
                         {/* Showcase & Validation Column */}
                         <div className="space-y-6">
                           {/* Validador WCAG */}
-                          <div className="p-6 rounded-2xl border border-zinc-900 bg-zinc-900/20 space-y-4">
+                          <div className="p-6 rounded-2xl border border-zinc-900 bg-zinc-950/40 backdrop-blur-md space-y-4">
                             <h3 className="text-xs font-bold tracking-wider text-zinc-400 uppercase">Validador de Contraste WCAG</h3>
                             <div className="grid grid-cols-2 gap-4">
                               <div className="p-3.5 rounded-xl bg-zinc-950 border border-zinc-900">
@@ -566,7 +580,7 @@ function App() {
                     {activeComponent === 'background' && (
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {/* Adjustments column */}
-                        <div className="p-6 rounded-2xl border border-zinc-900 bg-zinc-900/20 space-y-5">
+                        <div className="p-6 rounded-2xl border border-zinc-900 bg-zinc-950/40 backdrop-blur-md space-y-5">
                           <div>
                             <h3 className="text-xs font-bold tracking-wider text-zinc-400 uppercase">Ajustes del Fondo</h3>
                             <p className="text-xs text-zinc-500 mt-1">
@@ -962,10 +976,11 @@ function App() {
           </div>
         </TapShield>
 
-        <footer className="border-t border-zinc-900 bg-zinc-950 py-6 text-center text-xs text-zinc-500 font-mono">
-          PROTOTIPE Multitenant SaaS Component Library & Catalog © 2026
-        </footer>
-      </div>
+          <footer className="border-t border-zinc-900 bg-zinc-950/60 backdrop-blur-md py-6 text-center text-xs text-zinc-500 font-mono relative z-10">
+            PROTOTIPE Multitenant SaaS Component Library & Catalog © 2026
+          </footer>
+        </div> {/* Closes relative z-10 flex flex-col min-h-screen */}
+      </div> {/* Closes root wrapper */}
     </DynamicBrandingProvider>
   )
 }
