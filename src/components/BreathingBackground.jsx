@@ -1,5 +1,5 @@
-import React from 'react'
-import { motion } from 'framer-motion'
+import React, { useEffect } from 'react'
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
 
 export function BreathingBackground({
   color1 = { h: 262, s: 83, l: 58 },
@@ -36,6 +36,38 @@ export function BreathingBackground({
     ? scaleRange.map(v => Math.max(0.1, Math.min(5, v)))
     : [0.8, 1.2]
 
+  // Motion values to track mouse coordinate offsets
+  const mouseX = useMotionValue(0)
+  const mouseY = useMotionValue(0)
+
+  // Smooth springs to animate mouse interactions lag-free
+  const springX = useSpring(mouseX, { stiffness: 45, damping: 15 })
+  const springY = useSpring(mouseY, { stiffness: 45, damping: 15 })
+
+  // Transform outputs for inverted parallax movement
+  const springXInverted = useTransform(springX, (v) => -v)
+  const springYInverted = useTransform(springY, (v) => -v)
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+
+    const handleMouseMove = (e) => {
+      // Calculate normalized cursor position relative to screen center (-0.5 to 0.5)
+      const normX = (e.clientX / window.innerWidth) - 0.5
+      const normY = (e.clientY / window.innerHeight) - 0.5
+
+      // Scale cursor offset using the movement range parameter (multiplied for sensible shift feel)
+      const strengthFactor = clampedMovement * 1.8
+      mouseX.set(normX * strengthFactor)
+      mouseY.set(normY * strengthFactor)
+    }
+
+    window.addEventListener('mousemove', handleMouseMove)
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove)
+    }
+  }, [clampedMovement, mouseX, mouseY])
+
   return (
     <div
       className={`absolute inset-0 overflow-hidden pointer-events-none ${className}`}
@@ -46,47 +78,63 @@ export function BreathingBackground({
       }}
       data-testid="breathing-background-container"
     >
-      {/* Dynamic Blob 1 */}
+      {/* Blob 1 Parent (Interactive Mouse shift) */}
       <motion.div
-        animate={{
-          scale: safeScaleRange,
-          x: [-clampedMovement, clampedMovement, -clampedMovement],
-          y: [-clampedMovement / 2, clampedMovement / 2, -clampedMovement / 2],
-        }}
-        transition={{
-          duration: clampedSpeed,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
-        className="absolute w-[50%] h-[50%] rounded-full opacity-70 gpu-accelerated"
         style={{
-          top: '10%',
-          left: '10%',
-          background: `radial-gradient(circle, hsl(${c1.h} ${c1.s}% ${c1.l}%) 0%, transparent 70%)`,
+          x: springX,
+          y: springY,
           willChange: 'transform',
         }}
-      />
+        className="absolute w-[50%] h-[50%] rounded-full opacity-70"
+      >
+        {/* Blob 1 Child (Autonomous Breathing scale/pos) */}
+        <motion.div
+          animate={{
+            scale: safeScaleRange,
+            x: [-clampedMovement, clampedMovement, -clampedMovement],
+            y: [-clampedMovement / 2, clampedMovement / 2, -clampedMovement / 2],
+          }}
+          transition={{
+            duration: clampedSpeed,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+          className="absolute inset-0 rounded-full gpu-accelerated"
+          style={{
+            background: `radial-gradient(circle, hsl(${c1.h} ${c1.s}% ${c1.l}%) 0%, transparent 70%)`,
+            willChange: 'transform',
+          }}
+        />
+      </motion.div>
 
-      {/* Dynamic Blob 2 */}
+      {/* Blob 2 Parent (Interactive Mouse shift - Inverted for Parallax depth) */}
       <motion.div
-        animate={{
-          scale: [safeScaleRange[1], safeScaleRange[0], safeScaleRange[1]],
-          x: [clampedMovement, -clampedMovement, clampedMovement],
-          y: [clampedMovement / 2, -clampedMovement / 2, clampedMovement / 2],
-        }}
-        transition={{
-          duration: clampedSpeed * 1.3,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
-        className="absolute w-[55%] h-[55%] rounded-full opacity-60 gpu-accelerated"
         style={{
-          bottom: '10%',
-          right: '10%',
-          background: `radial-gradient(circle, hsl(${c2.h} ${c2.s}% ${c2.l}%) 0%, transparent 70%)`,
+          x: springXInverted,
+          y: springYInverted,
           willChange: 'transform',
         }}
-      />
+        className="absolute w-[55%] h-[55%] rounded-full opacity-60"
+      >
+        {/* Blob 2 Child (Autonomous Breathing scale/pos) */}
+        <motion.div
+          animate={{
+            scale: [safeScaleRange[1], safeScaleRange[0], safeScaleRange[1]],
+            x: [clampedMovement, -clampedMovement, clampedMovement],
+            y: [clampedMovement / 2, -clampedMovement / 2, clampedMovement / 2],
+          }}
+          transition={{
+            duration: clampedSpeed * 1.3,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+          className="absolute inset-0 rounded-full gpu-accelerated"
+          style={{
+            background: `radial-gradient(circle, hsl(${c2.h} ${c2.s}% ${c2.l}%) 0%, transparent 70%)`,
+            willChange: 'transform',
+          }}
+        />
+      </motion.div>
     </div>
   )
 }

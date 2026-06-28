@@ -36,6 +36,7 @@ function App() {
   const [qtyValue, setQtyValue] = useState(3)
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('Todos')
+  const [isBgModalOpen, setIsBgModalOpen] = useState(false)
 
 
 
@@ -689,15 +690,28 @@ function App() {
                           scaleRange={[backgroundConfig.scaleMin, backgroundConfig.scaleMax]}
                         />
                         
-                        <div className="z-10 text-center max-w-md space-y-3 p-6 rounded-2xl bg-zinc-950/80 border border-white/5 backdrop-blur-md">
+                        <div className="z-10 text-center max-w-md space-y-4 p-6 rounded-2xl bg-zinc-950/85 border border-white/5 backdrop-blur-md shadow-2xl">
                           <h3 className="text-base font-bold text-zinc-100">Fondo Respirando</h3>
                           <p className="text-xs text-zinc-400 leading-relaxed">
-                            El contenedor exterior está usando el componente `BreathingBackground` con los parámetros indicados a la izquierda.
+                            El contenedor exterior está usando el componente `BreathingBackground`. Mueve el cursor sobre esta visualización para interactuar con el fondo.
                           </p>
-                          <div className="pt-2 flex justify-center space-x-4 text-[10px] text-zinc-500 font-mono">
+                          
+                          <div className="flex justify-center pt-2">
+                            <button
+                              onClick={() => setIsBgModalOpen(true)}
+                              className="px-4 py-2 rounded-xl bg-primary hover:bg-primary-hover text-white text-xs font-semibold transition-all shadow-md shadow-primary/20 active:scale-95 cursor-pointer flex items-center space-x-1.5"
+                            >
+                              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75v4.5m0-4.5h-4.5m4.5 0L15 9m5.25 11.25v-4.5m0 4.5h-4.5m4.5 0l-6-6" />
+                              </svg>
+                              <span>Probar en Pantalla Completa (Modal)</span>
+                            </button>
+                          </div>
+
+                          <div className="pt-2 flex justify-center space-x-4 text-[10px] text-zinc-500 font-mono border-t border-white/5">
                             <span>FPS: ~60 (GPU)</span>
                             <span>•</span>
-                            <span>CLS: 0</span>
+                            <span>Interactividad: Sí</span>
                           </div>
                         </div>
                       </div>
@@ -925,7 +939,38 @@ function App() {
           onClose={() => setIsModalOpen(false)}
           title="Prueba de Tap-Shield & Portal"
         >
-          <p className="text-zinc-300">Esta ventana flotante utiliza React Portals para montarse directamente en la raíz del documento.</p>
+          <p className="text-zinc-300">Esta ventana flotante utiliza React Portals para montarse directamente en la raíz del DOM.</p>
+        </TapShield>
+
+        <TapShield
+          isOpen={isBgModalOpen}
+          onClose={() => setIsBgModalOpen(false)}
+          title="Fondo Respirable Interactivo"
+        >
+          <div className="absolute inset-0 -z-10 overflow-hidden bg-zinc-950 rounded-2xl">
+            <BreathingBackground
+              color1={backgroundConfig.color1}
+              color2={backgroundConfig.color2}
+              speed={backgroundConfig.speed}
+              blur={backgroundConfig.blur}
+              opacity={backgroundConfig.opacity}
+              movementRange={backgroundConfig.movementRange}
+              scaleRange={[backgroundConfig.scaleMin, backgroundConfig.scaleMax]}
+            />
+          </div>
+          <div className="relative z-10 space-y-4">
+            <p className="text-zinc-300 text-xs leading-relaxed">
+              Mueve el mouse por la pantalla para ver el efecto de paralaje interactivo en tiempo real. Los blobs de color se desplazarán suavemente respondiendo a tu cursor, incluso sobre este modal.
+            </p>
+            <div className="flex justify-end pt-3">
+              <button
+                onClick={() => setIsBgModalOpen(false)}
+                className="px-4 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-xs text-zinc-300 font-semibold transition-colors cursor-pointer border border-zinc-800"
+              >
+                Cerrar Vista
+              </button>
+            </div>
+          </div>
         </TapShield>
 
         <footer className="border-t border-zinc-900 bg-zinc-950 py-6 text-center text-xs text-zinc-500 font-mono">
