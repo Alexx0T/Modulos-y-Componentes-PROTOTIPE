@@ -8,17 +8,21 @@ export default function QuantitySelector({
   size = 'md',
   className = ''
 }) {
-  const numVal = parseInt(value, 10) || 0
+  const safeMin = typeof min === 'number' && !isNaN(min) ? min : 1
+  const safeMax = typeof max === 'number' && !isNaN(max) ? Math.max(safeMin, max) : Math.max(safeMin, 10)
+  
+  const rawVal = parseInt(value, 10)
+  const numVal = isNaN(rawVal) ? safeMin : rawVal
 
   const handleDecrement = () => {
-    if (numVal > min) {
-      onChange(numVal - 1)
+    if (numVal > safeMin) {
+      if (typeof onChange === 'function') onChange(numVal - 1)
     }
   }
 
   const handleIncrement = () => {
-    if (numVal < max) {
-      onChange(numVal + 1)
+    if (numVal < safeMax) {
+      if (typeof onChange === 'function') onChange(numVal + 1)
     }
   }
 
@@ -32,7 +36,7 @@ export default function QuantitySelector({
       <button
         type="button"
         onClick={handleDecrement}
-        disabled={numVal <= min}
+        disabled={numVal <= safeMin}
         className={`${btnSize} rounded-full flex items-center justify-center text-[var(--color-text)] bg-[var(--color-surface)] shadow-sm hover:bg-[var(--color-surface-2)] transition-transform active:scale-90 disabled:opacity-40 cursor-pointer`}
         aria-label="Disminuir cantidad"
       >
@@ -43,17 +47,21 @@ export default function QuantitySelector({
       
       <input
         type="number"
-        value={value}
+        value={value !== undefined && value !== null ? value : ''}
         onChange={(e) => {
           const val = parseInt(e.target.value, 10)
-          onChange(isNaN(val) ? '' : val)
+          if (typeof onChange === 'function') {
+            onChange(isNaN(val) ? '' : val)
+          }
         }}
         onBlur={() => {
           const val = parseInt(value, 10)
-          if (isNaN(val) || val < min) {
-            onChange(min)
-          } else if (val > max) {
-            onChange(max)
+          if (typeof onChange === 'function') {
+            if (isNaN(val) || val < safeMin) {
+              onChange(safeMin)
+            } else if (val > safeMax) {
+              onChange(safeMax)
+            }
           }
         }}
         className={`w-10 text-center font-bold text-[var(--color-text)] bg-transparent outline-none focus:outline-none border-none p-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${fontSize}`}
@@ -62,7 +70,7 @@ export default function QuantitySelector({
       <button
         type="button"
         onClick={handleIncrement}
-        disabled={numVal >= max}
+        disabled={numVal >= safeMax}
         className={`${btnSize} rounded-full flex items-center justify-center text-[var(--color-text)] bg-[var(--color-surface)] shadow-sm hover:bg-[var(--color-surface-2)] transition-transform active:scale-90 disabled:opacity-40 cursor-pointer`}
         aria-label="Aumentar cantidad"
       >

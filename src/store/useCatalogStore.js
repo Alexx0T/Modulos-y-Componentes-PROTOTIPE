@@ -59,9 +59,25 @@ export const useCatalogStore = create((set) => ({
     { id: 'clock', name: 'Digital Clock', date: '2026-06-27', description: 'Reloj digital sincronizado con zona horaria del cliente.', category: 'Utility' },
     { id: 'calendar', name: 'Component Calendar', date: '2026-06-27', description: 'Calendario interactivo de lanzamientos y registro de componentes.', category: 'Core Dashboard' },
     { id: 'quantity', name: 'Quantity Selector', date: '2026-06-06', description: 'Selector de cantidad atómico con botones circulares y límites de stock.', category: 'UI Atomic' },
-    { id: 'tapshield', name: 'Tap-Shield', date: '2026-06-27', description: 'Modal seguro con React Portals y backdrop oscurecido para mobile-first.', category: 'UI Atomic' }
+    { id: 'tapshield', name: 'Tap-Shield', date: '2026-06-27', description: 'Modal seguro con React Portals y backdrop oscurecido para mobile-first.', category: 'UI Atomic' },
+    { id: 'background', name: 'Breathing Background', date: '2026-06-28', description: 'Fondo respirable interactivo con optimizaciones GPU y colores HSL dinámicos.', category: 'UI Background' }
   ],
   
+  backgroundConfig: {
+    color1: { h: 262, s: 83, l: 58 },
+    color2: { h: 330, s: 98, l: 60 },
+    speed: 10,
+    blur: 80,
+    opacity: 0.25,
+    movementRange: 50,
+    scaleMin: 0.8,
+    scaleMax: 1.2
+  },
+
+  setBackgroundConfig: (newConfig) => set((state) => ({
+    backgroundConfig: { ...state.backgroundConfig, ...newConfig }
+  })),
+
   setBranding: (newBranding) => set((state) => {
     const updated = { ...state.branding, ...newBranding }
     

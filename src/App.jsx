@@ -8,6 +8,7 @@ import { TapShield } from './components/TapShield.jsx'
 import { DigitalClock } from './components/DigitalClock.jsx'
 import { ComponentCalendar } from './components/ComponentCalendar.jsx'
 import QuantitySelector from './components/QuantitySelector.jsx'
+import { BreathingBackground } from './components/BreathingBackground.jsx'
 
 function App() {
   const {
@@ -23,7 +24,9 @@ function App() {
     clearChat,
     setFormSchema,
     setFormValues,
-    resetBranding
+    resetBranding,
+    backgroundConfig,
+    setBackgroundConfig
   } = useCatalogStore()
 
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -31,12 +34,25 @@ function App() {
   const [isTyping, setIsTyping] = useState(false)
   const [activeTab, setActiveTab] = useState('preview')
   const [qtyValue, setQtyValue] = useState(3)
+  const [searchQuery, setSearchQuery] = useState('')
+  const [selectedCategory, setSelectedCategory] = useState('Todos')
 
 
 
   useEffect(() => {
     setSchemaText(formSchema)
   }, [formSchema])
+
+  const filteredComponents = (Array.isArray(registeredComponents) ? registeredComponents : []).filter((comp) => {
+    if (!comp || typeof comp !== 'object') return false
+    const name = comp.name || ''
+    const category = comp.category || ''
+    const description = comp.description || ''
+    const matchesCategory = selectedCategory === 'Todos' || category === selectedCategory;
+    const matchesSearch = name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                          description.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
 
   const darkBg = { h: 220, s: 20, l: 3 }
   const lightText = { h: 0, s: 0, l: 95 }
@@ -134,67 +150,126 @@ function App() {
                 </p>
               </div>
 
-              <div className="flex flex-col space-y-1">
-                {registeredComponents.map((comp) => {
-                  const isActive = activeComponent === comp.id;
-                  return (
+              {/* Filtros de Búsqueda y Categorías */}
+              <div className="space-y-3 pt-1 border-t border-zinc-900/60">
+                {/* Campo de búsqueda */}
+                <div className="relative">
+                  <input
+                    type="text"
+                    placeholder="Buscar componente..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full pl-9 pr-7 py-2 rounded-xl bg-zinc-950 border border-zinc-900 text-zinc-200 placeholder-zinc-500 text-xs focus:outline-none focus:ring-1 focus:ring-primary/50 focus:border-primary transition-all duration-200"
+                  />
+                  <svg className="w-3.5 h-3.5 absolute left-3 top-2.5 text-zinc-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                  {searchQuery && (
                     <button
-                      key={comp.id}
-                      onClick={() => setActiveComponent(comp.id)}
-                      className={`w-full text-left px-3.5 py-3 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center justify-between border ${
-                        isActive
-                          ? 'bg-primary/10 border-primary/25 text-primary shadow shadow-primary/5'
-                          : 'border-transparent text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/40'
-                      }`}
+                      onClick={() => setSearchQuery('')}
+                      className="absolute right-2.5 top-2 text-zinc-500 hover:text-zinc-300 text-xs p-0.5"
                     >
-                      <div className="flex items-center space-x-3">
-                        {comp.id === 'branding' && (
-                          <svg className="w-4 h-4 text-current" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M9.53 16.122a3 3 0 00-2.235 2.236m11.352-8.24a3 3 0 10-4.243-4.242L4.05 16.293a3 3 0 01-1.285.786l-2.083.694a1 1 0 00-1.185 1.185l.694 2.083c.2.6.47 1.15.825 1.637m15.885-16.73L13.5 12" />
-                          </svg>
-                        )}
-                        {comp.id === 'form' && (
-                          <svg className="w-4 h-4 text-current" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                          </svg>
-                        )}
-                        {comp.id === 'chat' && (
-                          <svg className="w-4 h-4 text-current" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                          </svg>
-                        )}
-                        {comp.id === 'clock' && (
-                          <svg className="w-4 h-4 text-current" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                          </svg>
-                        )}
-                        {comp.id === 'calendar' && (
-                          <svg className="w-4 h-4 text-current" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                          </svg>
-                        )}
-                        {comp.id === 'quantity' && (
-                          <svg className="w-4 h-4 text-current" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                          </svg>
-                        )}
-                        {comp.id === 'tapshield' && (
-                          <svg className="w-4 h-4 text-current" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                          </svg>
-                        )}
-                        <span className="truncate">{comp.name}</span>
-                      </div>
-                      <span className={`text-[9px] px-1.5 py-0.5 rounded border font-mono capitalize shrink-0 ${
-                        isActive 
-                          ? 'bg-primary/10 border-primary/20 text-primary' 
-                          : 'bg-zinc-950 border-zinc-900 text-zinc-500'
-                      }`}>
-                        {comp.category}
-                      </span>
+                      ✕
                     </button>
-                  );
-                })}
+                  )}
+                </div>
+
+                {/* Chips de Categorías */}
+                <div className="flex flex-wrap gap-1 overflow-x-auto pb-1 max-h-[85px] scrollbar-thin">
+                  {['Todos', 'Branding', 'UI Core', 'AI Integration', 'Utility', 'Core Dashboard', 'UI Atomic', 'UI Background'].map((cat) => {
+                    const isSel = selectedCategory === cat;
+                    return (
+                      <button
+                        key={cat}
+                        onClick={() => setSelectedCategory(cat)}
+                        className={`text-[9px] px-2 py-0.5 rounded-md border font-medium transition-all cursor-pointer ${
+                          isSel
+                            ? 'bg-primary border-primary text-white'
+                            : 'bg-zinc-950/60 border-zinc-900 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/40'
+                        }`}
+                      >
+                        {cat}
+                      </button>
+                    )
+                  })}
+                </div>
+              </div>
+
+              <div className="flex flex-col space-y-1 pt-1 border-t border-zinc-900/60">
+                {filteredComponents.length > 0 ? (
+                  filteredComponents.map((comp) => {
+                    const isActive = activeComponent === comp.id;
+                    return (
+                      <button
+                        key={comp.id}
+                        onClick={() => {
+                          setActiveComponent(comp.id)
+                          setActiveTab('preview')
+                        }}
+                        className={`w-full text-left px-3.5 py-3 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center justify-between border ${
+                          isActive
+                            ? 'bg-primary/10 border-primary/25 text-primary shadow shadow-primary/5'
+                            : 'border-transparent text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/40'
+                        }`}
+                      >
+                        <div className="flex items-center space-x-3">
+                          {comp.id === 'branding' && (
+                            <svg className="w-4 h-4 text-current" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M9.53 16.122a3 3 0 00-2.235 2.236m11.352-8.24a3 3 0 10-4.243-4.242L4.05 16.293a3 3 0 01-1.285.786l-2.083.694a1 1 0 00-1.185 1.185l.694 2.083c.2.6.47 1.15.825 1.637m15.885-16.73L13.5 12" />
+                            </svg>
+                          )}
+                          {comp.id === 'form' && (
+                            <svg className="w-4 h-4 text-current" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                          )}
+                          {comp.id === 'chat' && (
+                            <svg className="w-4 h-4 text-current" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                            </svg>
+                          )}
+                          {comp.id === 'clock' && (
+                            <svg className="w-4 h-4 text-current" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                          )}
+                          {comp.id === 'calendar' && (
+                            <svg className="w-4 h-4 text-current" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                          )}
+                          {comp.id === 'quantity' && (
+                            <svg className="w-4 h-4 text-current" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                          )}
+                          {comp.id === 'tapshield' && (
+                            <svg className="w-4 h-4 text-current" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                            </svg>
+                          )}
+                          {comp.id === 'background' && (
+                            <svg className="w-4 h-4 text-current" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z" />
+                            </svg>
+                          )}
+                          <span className="truncate">{comp.name}</span>
+                        </div>
+                        <span className={`text-[9px] px-1.5 py-0.5 rounded border font-mono capitalize shrink-0 ${
+                          isActive 
+                            ? 'bg-primary/10 border-primary/20 text-primary' 
+                            : 'bg-zinc-950 border-zinc-900 text-zinc-500'
+                        }`}>
+                          {comp.category}
+                        </span>
+                      </button>
+                    );
+                  })
+                ) : (
+                  <div className="text-zinc-600 text-[11px] py-6 text-center border border-dashed border-zinc-900 rounded-2xl bg-zinc-950/20">
+                    Ningún componente coincide.
+                  </div>
+                )}
               </div>
             </div>
 
@@ -311,6 +386,115 @@ function App() {
                             <span className="text-[10px] font-bold text-rose-400 px-2 py-0.5 rounded bg-rose-950/30">No Accesible</span>
                           )}
                         </div>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+
+              {activeComponent === 'background' && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.25, ease: 'easeInOut' }}
+                  className="space-y-6 overflow-hidden"
+                >
+                  <div className="rounded-2xl border border-zinc-900 bg-zinc-900/20 p-6 space-y-6">
+                    <div>
+                      <h2 className="text-sm font-bold tracking-wider text-zinc-400 uppercase">Ajustes del Fondo Respirable</h2>
+                      <p className="text-xs text-zinc-500 mt-1">
+                        Personaliza los parámetros del componente y observa cómo respira en tiempo real.
+                      </p>
+                    </div>
+
+                    <div className="space-y-4">
+                      {/* Color 1 Hue */}
+                      <div>
+                        <div className="flex justify-between text-[11px] text-zinc-400 mb-1">
+                          <span>Matiz Color 1 (H)</span>
+                          <span>{backgroundConfig.color1.h}º</span>
+                        </div>
+                        <input
+                          type="range" min="0" max="360"
+                          value={backgroundConfig.color1.h}
+                          onChange={(e) => setBackgroundConfig({
+                            color1: { ...backgroundConfig.color1, h: Number(e.target.value) }
+                          })}
+                          className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-primary"
+                        />
+                      </div>
+
+                      {/* Color 2 Hue */}
+                      <div>
+                        <div className="flex justify-between text-[11px] text-zinc-400 mb-1">
+                          <span>Matiz Color 2 (H)</span>
+                          <span>{backgroundConfig.color2.h}º</span>
+                        </div>
+                        <input
+                          type="range" min="0" max="360"
+                          value={backgroundConfig.color2.h}
+                          onChange={(e) => setBackgroundConfig({
+                            color2: { ...backgroundConfig.color2, h: Number(e.target.value) }
+                          })}
+                          className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-accent"
+                        />
+                      </div>
+
+                      {/* Velocidad */}
+                      <div>
+                        <div className="flex justify-between text-[11px] text-zinc-400 mb-1">
+                          <span>Duración del Ciclo (Velocidad)</span>
+                          <span>{backgroundConfig.speed}s</span>
+                        </div>
+                        <input
+                          type="range" min="2" max="30" step="1"
+                          value={backgroundConfig.speed}
+                          onChange={(e) => setBackgroundConfig({ speed: Number(e.target.value) })}
+                          className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-primary"
+                        />
+                      </div>
+
+                      {/* Opacidad */}
+                      <div>
+                        <div className="flex justify-between text-[11px] text-zinc-400 mb-1">
+                          <span>Opacidad</span>
+                          <span>{Math.round(backgroundConfig.opacity * 100)}%</span>
+                        </div>
+                        <input
+                          type="range" min="0.05" max="0.9" step="0.05"
+                          value={backgroundConfig.opacity}
+                          onChange={(e) => setBackgroundConfig({ opacity: Number(e.target.value) })}
+                          className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-primary"
+                        />
+                      </div>
+
+                      {/* Blur */}
+                      <div>
+                        <div className="flex justify-between text-[11px] text-zinc-400 mb-1">
+                          <span>Desenfoque (Blur)</span>
+                          <span>{backgroundConfig.blur}px</span>
+                        </div>
+                        <input
+                          type="range" min="10" max="180" step="5"
+                          value={backgroundConfig.blur}
+                          onChange={(e) => setBackgroundConfig({ blur: Number(e.target.value) })}
+                          className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-primary"
+                        />
+                      </div>
+
+                      {/* Rango de Movimiento */}
+                      <div>
+                        <div className="flex justify-between text-[11px] text-zinc-400 mb-1">
+                          <span>Rango de Movimiento</span>
+                          <span>{backgroundConfig.movementRange}px</span>
+                        </div>
+                        <input
+                          type="range" min="0" max="150" step="5"
+                          value={backgroundConfig.movementRange}
+                          onChange={(e) => setBackgroundConfig({ movementRange: Number(e.target.value) })}
+                          className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-primary"
+                        />
                       </div>
                     </div>
                   </div>
@@ -491,6 +675,33 @@ function App() {
                         </button>
                       </div>
                     )}
+
+                    {activeComponent === 'background' && (
+                      <div className="p-8 rounded-2xl border border-zinc-900 bg-zinc-900/10 flex flex-col items-center justify-center space-y-6 min-h-[420px] relative overflow-hidden">
+                        {/* Breathing background preview inside container */}
+                        <BreathingBackground
+                          color1={backgroundConfig.color1}
+                          color2={backgroundConfig.color2}
+                          speed={backgroundConfig.speed}
+                          blur={backgroundConfig.blur}
+                          opacity={backgroundConfig.opacity}
+                          movementRange={backgroundConfig.movementRange}
+                          scaleRange={[backgroundConfig.scaleMin, backgroundConfig.scaleMax]}
+                        />
+                        
+                        <div className="z-10 text-center max-w-md space-y-3 p-6 rounded-2xl bg-zinc-950/80 border border-white/5 backdrop-blur-md">
+                          <h3 className="text-base font-bold text-zinc-100">Fondo Respirando</h3>
+                          <p className="text-xs text-zinc-400 leading-relaxed">
+                            El contenedor exterior está usando el componente `BreathingBackground` con los parámetros indicados a la izquierda.
+                          </p>
+                          <div className="pt-2 flex justify-center space-x-4 text-[10px] text-zinc-500 font-mono">
+                            <span>FPS: ~60 (GPU)</span>
+                            <span>•</span>
+                            <span>CLS: 0</span>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </motion.div>
                 ) : (
                   <motion.div
@@ -634,6 +845,69 @@ function App() {
                               <td className="border border-zinc-800 p-2 font-mono text-primary">title</td>
                               <td className="border border-zinc-800 p-2 font-mono">string</td>
                               <td className="border border-zinc-800 p-2">Título de la cabecera.</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    )}
+
+                    {activeComponent === 'background' && (
+                      <div className="prose prose-invert max-w-none space-y-6">
+                        <h3 className="text-xl font-bold text-zinc-100">Fondo Orgánico Respirable (BreathingBackground)</h3>
+                        <p className="text-sm text-zinc-400">Este componente crea un fondo orgánico con gradientes de color que aumentan y disminuyen lentamente su escala y posición, imitando una respiración. Es ideal para fondos elegantes de paneles SaaS multitenant.</p>
+                        
+                        <h4 className="text-sm font-bold text-zinc-300">1. Propósito y Casos de Uso</h4>
+                        <ul className="list-disc pl-5 text-xs text-zinc-400 space-y-1">
+                          <li>Micro-interacción Orgánica: Añade dinamismo y sensación de "vida" a la interfaz sin distraer.</li>
+                          <li>Optimización Extrema: Utiliza animaciones de propiedades compuestas (`scale`, `translate3d`) aceleradas por GPU, garantizando cero reflows en el DOM.</li>
+                        </ul>
+
+                        <h4 className="text-sm font-bold text-zinc-300">2. Props y API del Componente</h4>
+                        <table className="min-w-full text-xs text-zinc-400 border border-zinc-800">
+                          <thead>
+                            <tr className="bg-zinc-900">
+                              <th className="border border-zinc-800 p-2 text-left">Prop</th>
+                              <th className="border border-zinc-800 p-2 text-left">Tipo</th>
+                              <th className="border border-zinc-800 p-2 text-left">Default</th>
+                              <th className="border border-zinc-800 p-2 text-left">Descripción</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td className="border border-zinc-800 p-2 font-mono text-primary">color1</td>
+                              <td className="border border-zinc-800 p-2 font-mono">object</td>
+                              <td className="border border-zinc-800 p-2 font-mono">HSL</td>
+                              <td className="border border-zinc-800 p-2">Objeto HSL del primer blob respirable.</td>
+                            </tr>
+                            <tr>
+                              <td className="border border-zinc-800 p-2 font-mono text-primary">color2</td>
+                              <td className="border border-zinc-800 p-2 font-mono">object</td>
+                              <td className="border border-zinc-800 p-2 font-mono">HSL</td>
+                              <td className="border border-zinc-800 p-2">Objeto HSL del segundo blob respirable.</td>
+                            </tr>
+                            <tr>
+                              <td className="border border-zinc-800 p-2 font-mono text-primary">speed</td>
+                              <td className="border border-zinc-800 p-2 font-mono">number</td>
+                              <td className="border border-zinc-800 p-2 font-mono">10</td>
+                              <td className="border border-zinc-800 p-2">Duración en segundos de un ciclo completo de respiración.</td>
+                            </tr>
+                            <tr>
+                              <td className="border border-zinc-800 p-2 font-mono text-primary">blur</td>
+                              <td className="border border-zinc-800 p-2 font-mono">number</td>
+                              <td className="border border-zinc-800 p-2 font-mono">80</td>
+                              <td className="border border-zinc-800 p-2">Filtro de desenfoque aplicado a los gradientes (en px).</td>
+                            </tr>
+                            <tr>
+                              <td className="border border-zinc-800 p-2 font-mono text-primary">opacity</td>
+                              <td className="border border-zinc-800 p-2 font-mono">number</td>
+                              <td className="border border-zinc-800 p-2 font-mono">0.25</td>
+                              <td className="border border-zinc-800 p-2">Opacidad general del contenedor (0 a 1).</td>
+                            </tr>
+                            <tr>
+                              <td className="border border-zinc-800 p-2 font-mono text-primary">movementRange</td>
+                              <td className="border border-zinc-800 p-2 font-mono">number</td>
+                              <td className="border border-zinc-800 p-2 font-mono">50</td>
+                              <td className="border border-zinc-800 p-2">Límite de translación de movimiento de los blobs (en px).</td>
                             </tr>
                           </tbody>
                         </table>
