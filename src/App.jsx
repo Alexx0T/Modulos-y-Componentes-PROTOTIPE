@@ -782,48 +782,50 @@ function App() {
                         </ul>
 
                         <h4 className="text-sm font-bold text-zinc-300">3. Props y API del Componente</h4>
-                        <table className="min-w-full text-xs text-zinc-400 border border-zinc-800">
-                          <thead>
-                            <tr className="bg-zinc-900">
-                              <th className="border border-zinc-800 p-2 text-left">Prop</th>
-                              <th className="border border-zinc-800 p-2 text-left">Tipo</th>
-                              <th className="border border-zinc-800 p-2 text-left">Default</th>
-                              <th className="border border-zinc-800 p-2 text-left">Descripción</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td className="border border-zinc-800 p-2 font-mono text-primary">value</td>
-                              <td className="border border-zinc-800 p-2 font-mono">number</td>
-                              <td className="border border-zinc-800 p-2 font-mono">-</td>
-                              <td className="border border-zinc-800 p-2">Cantidad numérica actual.</td>
-                            </tr>
-                            <tr>
-                              <td className="border border-zinc-800 p-2 font-mono text-primary">onChange</td>
-                              <td className="border border-zinc-800 p-2 font-mono">function</td>
-                              <td className="border border-zinc-800 p-2 font-mono">-</td>
-                              <td className="border border-zinc-800 p-2">Callback invocado al cambiar la cantidad.</td>
-                            </tr>
-                            <tr>
-                              <td className="border border-zinc-800 p-2 font-mono text-primary">min</td>
-                              <td className="border border-zinc-800 p-2 font-mono">number</td>
-                              <td className="border border-zinc-800 p-2 font-mono">1</td>
-                              <td className="border border-zinc-800 p-2">Límite mínimo de selección.</td>
-                            </tr>
-                            <tr>
-                              <td className="border border-zinc-800 p-2 font-mono text-primary">max</td>
-                              <td className="border border-zinc-800 p-2 font-mono">number</td>
-                              <td className="border border-zinc-800 p-2 font-mono">10</td>
-                              <td className="border border-zinc-800 p-2">Límite máximo de selección.</td>
-                            </tr>
-                            <tr>
-                              <td className="border border-zinc-800 p-2 font-mono text-primary">size</td>
-                              <td className="border border-zinc-800 p-2 font-mono">string</td>
-                              <td className="border border-zinc-800 p-2 font-mono">"md"</td>
-                              <td className="border border-zinc-800 p-2">Tamaño de presentación: "sm" | "md".</td>
-                            </tr>
-                          </tbody>
-                        </table>
+                        <div className="overflow-x-auto w-full border border-zinc-800 rounded-xl">
+                          <table className="min-w-full text-xs text-zinc-400">
+                            <thead>
+                              <tr className="bg-zinc-900/60 border-b border-zinc-800">
+                                <th className="p-2.5 text-left font-semibold">Prop</th>
+                                <th className="p-2.5 text-left font-semibold">Tipo</th>
+                                <th className="p-2.5 text-left font-semibold">Default</th>
+                                <th className="p-2.5 text-left font-semibold">Descripción</th>
+                              </tr>
+                            </thead>
+                            <tbody className="divide-y divide-zinc-800/60">
+                              <tr>
+                                <td className="p-2.5 font-mono text-primary">value</td>
+                                <td className="p-2.5 font-mono">number</td>
+                                <td className="p-2.5 font-mono">-</td>
+                                <td className="p-2.5">Cantidad numérica actual.</td>
+                              </tr>
+                              <tr>
+                                <td className="p-2.5 font-mono text-primary">onChange</td>
+                                <td className="p-2.5 font-mono">function</td>
+                                <td className="p-2.5 font-mono">-</td>
+                                <td className="p-2.5">Callback invocado al cambiar la cantidad.</td>
+                              </tr>
+                              <tr>
+                                <td className="p-2.5 font-mono text-primary">min</td>
+                                <td className="p-2.5 font-mono">number</td>
+                                <td className="p-2.5 font-mono">1</td>
+                                <td className="p-2.5">Límite mínimo de selección.</td>
+                              </tr>
+                              <tr>
+                                <td className="p-2.5 font-mono text-primary">max</td>
+                                <td className="p-2.5 font-mono">number</td>
+                                <td className="p-2.5 font-mono">10</td>
+                                <td className="p-2.5">Límite máximo de selección.</td>
+                              </tr>
+                              <tr>
+                                <td className="p-2.5 font-mono text-primary">size</td>
+                                <td className="p-2.5 font-mono">string</td>
+                                <td className="p-2.5 font-mono">"md"</td>
+                                <td className="p-2.5">Tamaño de presentación: "sm" | "md".</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
                       </div>
                     )}
 
@@ -839,32 +841,34 @@ function App() {
                         </ul>
 
                         <h4 className="text-sm font-bold text-zinc-300">2. Props y API del Componente</h4>
-                        <table className="min-w-full text-xs text-zinc-400 border border-zinc-800">
-                          <thead>
-                            <tr className="bg-zinc-900">
-                              <th className="border border-zinc-800 p-2 text-left">Prop</th>
-                              <th className="border border-zinc-800 p-2 text-left">Tipo</th>
-                              <th className="border border-zinc-800 p-2 text-left">Descripción</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td className="border border-zinc-800 p-2 font-mono text-primary">isOpen</td>
-                              <td className="border border-zinc-800 p-2 font-mono">boolean</td>
-                              <td className="border border-zinc-800 p-2">Indica si el modal está abierto.</td>
-                            </tr>
-                            <tr>
-                              <td className="border border-zinc-800 p-2 font-mono text-primary">onClose</td>
-                              <td className="border border-zinc-800 p-2 font-mono">function</td>
-                              <td className="border border-zinc-800 p-2">Callback ejecutado para cerrar el modal.</td>
-                            </tr>
-                            <tr>
-                              <td className="border border-zinc-800 p-2 font-mono text-primary">title</td>
-                              <td className="border border-zinc-800 p-2 font-mono">string</td>
-                              <td className="border border-zinc-800 p-2">Título de la cabecera.</td>
-                            </tr>
-                          </tbody>
-                        </table>
+                        <div className="overflow-x-auto w-full border border-zinc-800 rounded-xl">
+                          <table className="min-w-full text-xs text-zinc-400">
+                            <thead>
+                              <tr className="bg-zinc-900/60 border-b border-zinc-800">
+                                <th className="p-2.5 text-left font-semibold">Prop</th>
+                                <th className="p-2.5 text-left font-semibold">Tipo</th>
+                                <th className="p-2.5 text-left font-semibold">Descripción</th>
+                              </tr>
+                            </thead>
+                            <tbody className="divide-y divide-zinc-800/60">
+                              <tr>
+                                <td className="p-2.5 font-mono text-primary">isOpen</td>
+                                <td className="p-2.5 font-mono">boolean</td>
+                                <td className="p-2.5">Indica si el modal está abierto.</td>
+                              </tr>
+                              <tr>
+                                <td className="p-2.5 font-mono text-primary">onClose</td>
+                                <td className="p-2.5 font-mono">function</td>
+                                <td className="p-2.5">Callback ejecutado para cerrar el modal.</td>
+                              </tr>
+                              <tr>
+                                <td className="p-2.5 font-mono text-primary">title</td>
+                                <td className="p-2.5 font-mono">string</td>
+                                <td className="p-2.5">Título de la cabecera.</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
                       </div>
                     )}
 
@@ -880,54 +884,56 @@ function App() {
                         </ul>
 
                         <h4 className="text-sm font-bold text-zinc-300">2. Props y API del Componente</h4>
-                        <table className="min-w-full text-xs text-zinc-400 border border-zinc-800">
-                          <thead>
-                            <tr className="bg-zinc-900">
-                              <th className="border border-zinc-800 p-2 text-left">Prop</th>
-                              <th className="border border-zinc-800 p-2 text-left">Tipo</th>
-                              <th className="border border-zinc-800 p-2 text-left">Default</th>
-                              <th className="border border-zinc-800 p-2 text-left">Descripción</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td className="border border-zinc-800 p-2 font-mono text-primary">color1</td>
-                              <td className="border border-zinc-800 p-2 font-mono">object</td>
-                              <td className="border border-zinc-800 p-2 font-mono">HSL</td>
-                              <td className="border border-zinc-800 p-2">Objeto HSL del primer blob respirable.</td>
-                            </tr>
-                            <tr>
-                              <td className="border border-zinc-800 p-2 font-mono text-primary">color2</td>
-                              <td className="border border-zinc-800 p-2 font-mono">object</td>
-                              <td className="border border-zinc-800 p-2 font-mono">HSL</td>
-                              <td className="border border-zinc-800 p-2">Objeto HSL del segundo blob respirable.</td>
-                            </tr>
-                            <tr>
-                              <td className="border border-zinc-800 p-2 font-mono text-primary">speed</td>
-                              <td className="border border-zinc-800 p-2 font-mono">number</td>
-                              <td className="border border-zinc-800 p-2 font-mono">10</td>
-                              <td className="border border-zinc-800 p-2">Duración en segundos de un ciclo completo de respiración.</td>
-                            </tr>
-                            <tr>
-                              <td className="border border-zinc-800 p-2 font-mono text-primary">blur</td>
-                              <td className="border border-zinc-800 p-2 font-mono">number</td>
-                              <td className="border border-zinc-800 p-2 font-mono">80</td>
-                              <td className="border border-zinc-800 p-2">Filtro de desenfoque aplicado a los gradientes (en px).</td>
-                            </tr>
-                            <tr>
-                              <td className="border border-zinc-800 p-2 font-mono text-primary">opacity</td>
-                              <td className="border border-zinc-800 p-2 font-mono">number</td>
-                              <td className="border border-zinc-800 p-2 font-mono">0.25</td>
-                              <td className="border border-zinc-800 p-2">Opacidad general del contenedor (0 a 1).</td>
-                            </tr>
-                            <tr>
-                              <td className="border border-zinc-800 p-2 font-mono text-primary">movementRange</td>
-                              <td className="border border-zinc-800 p-2 font-mono">number</td>
-                              <td className="border border-zinc-800 p-2 font-mono">50</td>
-                              <td className="border border-zinc-800 p-2">Límite de translación de movimiento de los blobs (en px).</td>
-                            </tr>
-                          </tbody>
-                        </table>
+                        <div className="overflow-x-auto w-full border border-zinc-800 rounded-xl">
+                          <table className="min-w-full text-xs text-zinc-400">
+                            <thead>
+                              <tr className="bg-zinc-900/60 border-b border-zinc-800">
+                                <th className="p-2.5 text-left font-semibold">Prop</th>
+                                <th className="p-2.5 text-left font-semibold">Tipo</th>
+                                <th className="p-2.5 text-left font-semibold">Default</th>
+                                <th className="p-2.5 text-left font-semibold">Descripción</th>
+                              </tr>
+                            </thead>
+                            <tbody className="divide-y divide-zinc-800/60">
+                              <tr>
+                                <td className="p-2.5 font-mono text-primary">color1</td>
+                                <td className="p-2.5 font-mono">object</td>
+                                <td className="p-2.5 font-mono">HSL</td>
+                                <td className="p-2.5">Objeto HSL del primer blob respirable.</td>
+                              </tr>
+                              <tr>
+                                <td className="p-2.5 font-mono text-primary">color2</td>
+                                <td className="p-2.5 font-mono">object</td>
+                                <td className="p-2.5 font-mono">HSL</td>
+                                <td className="p-2.5">Objeto HSL del segundo blob respirable.</td>
+                              </tr>
+                              <tr>
+                                <td className="p-2.5 font-mono text-primary">speed</td>
+                                <td className="p-2.5 font-mono">number</td>
+                                <td className="p-2.5 font-mono">10</td>
+                                <td className="p-2.5">Duración en segundos de un ciclo completo de respiración.</td>
+                              </tr>
+                              <tr>
+                                <td className="p-2.5 font-mono text-primary">blur</td>
+                                <td className="p-2.5 font-mono">number</td>
+                                <td className="p-2.5 font-mono">80</td>
+                                <td className="p-2.5">Filtro de desenfoque aplicado a los gradientes (en px).</td>
+                              </tr>
+                              <tr>
+                                <td className="p-2.5 font-mono text-primary">opacity</td>
+                                <td className="p-2.5 font-mono">number</td>
+                                <td className="p-2.5 font-mono">0.25</td>
+                                <td className="p-2.5">Opacidad general del contenedor (0 a 1).</td>
+                              </tr>
+                              <tr>
+                                <td className="p-2.5 font-mono text-primary">movementRange</td>
+                                <td className="p-2.5 font-mono">number</td>
+                                <td className="p-2.5 font-mono">50</td>
+                                <td className="p-2.5">Límite de translación de movimiento de los blobs (en px).</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
                       </div>
                     )}
                   </motion.div>

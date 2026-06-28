@@ -53,10 +53,10 @@ export function BreathingBackground({
   useEffect(() => {
     if (typeof window === 'undefined') return
 
-    const handleMouseMove = (e) => {
-      // Calculate normalized cursor position relative to screen center (-0.5 to 0.5)
-      const normX = (e.clientX / window.innerWidth) - 0.5
-      const normY = (e.clientY / window.innerHeight) - 0.5
+    const handlePositionChange = (clientX, clientY) => {
+      // Calculate normalized position relative to screen center (-0.5 to 0.5)
+      const normX = (clientX / window.innerWidth) - 0.5
+      const normY = (clientY / window.innerHeight) - 0.5
 
       // Calculate translation range based on viewport dimensions (e.g. 12% of screen size)
       const maxShiftX = window.innerWidth * 0.12
@@ -66,9 +66,22 @@ export function BreathingBackground({
       mouseY.set(normY * maxShiftY)
     }
 
+    const handleMouseMove = (e) => {
+      handlePositionChange(e.clientX, e.clientY)
+    }
+
+    const handleTouchMove = (e) => {
+      if (e.touches.length === 0) return
+      const touch = e.touches[0]
+      handlePositionChange(touch.clientX, touch.clientY)
+    }
+
     window.addEventListener('mousemove', handleMouseMove)
+    window.addEventListener('touchmove', handleTouchMove, { passive: true })
+    
     return () => {
       window.removeEventListener('mousemove', handleMouseMove)
+      window.removeEventListener('touchmove', handleTouchMove)
     }
   }, [mouseX, mouseY])
 
