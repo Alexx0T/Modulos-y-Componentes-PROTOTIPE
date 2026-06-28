@@ -274,234 +274,7 @@ function App() {
               </div>
             </div>
 
-            <AnimatePresence initial={false}>
-              {activeComponent === 'branding' && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.25, ease: 'easeInOut' }}
-                  className="space-y-6 overflow-hidden"
-                >
-                  <div className="rounded-2xl border border-zinc-900 bg-zinc-900/20 p-6 space-y-6">
-                    <div>
-                      <h2 className="text-sm font-bold tracking-wider text-zinc-400 uppercase">Inyección de Branding HSL</h2>
-                      <p className="text-xs text-zinc-500 mt-1">
-                        Modifica las variables HSL dinámicas y observa cómo cambia toda la interfaz en tiempo real.
-                      </p>
-                    </div>
-
-                    <div className="space-y-4">
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs font-semibold text-zinc-300">Color Primario (Primary HSL)</span>
-                        <div className="w-4 h-4 rounded-full bg-primary" />
-                      </div>
-                      
-                      <div className="space-y-3">
-                        <div>
-                          <div className="flex justify-between text-[11px] text-zinc-400 mb-1">
-                            <span>Hue (Matiz)</span>
-                            <span>{branding.primary.h}º</span>
-                          </div>
-                          <input
-                            type="range" min="0" max="360"
-                            value={branding.primary.h}
-                            onChange={(e) => handleColorChange('primary', 'h', Number(e.target.value))}
-                            className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-primary"
-                          />
-                        </div>
-
-                        <div>
-                          <div className="flex justify-between text-[11px] text-zinc-400 mb-1">
-                            <span>Saturation (Saturación)</span>
-                            <span>{branding.primary.s}%</span>
-                          </div>
-                          <input
-                            type="range" min="0" max="100"
-                            value={branding.primary.s}
-                            onChange={(e) => handleColorChange('primary', 's', Number(e.target.value))}
-                            className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-primary"
-                          />
-                        </div>
-
-                        <div>
-                          <div className="flex justify-between text-[11px] text-zinc-400 mb-1">
-                            <span>Lightness (Luminosidad)</span>
-                            <span>{branding.primary.l}%</span>
-                          </div>
-                          <input
-                            type="range" min="0" max="100"
-                            value={branding.primary.l}
-                            onChange={(e) => handleColorChange('primary', 'l', Number(e.target.value))}
-                            className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-primary"
-                          />
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="space-y-4 pt-4 border-t border-zinc-900">
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs font-semibold text-zinc-300">Color Secundario (Secondary HSL)</span>
-                        <div className="w-4 h-4 rounded-full bg-secondary" />
-                      </div>
-                      
-                      <div className="space-y-3">
-                        <div>
-                          <div className="flex justify-between text-[11px] text-zinc-400 mb-1">
-                            <span>Hue</span>
-                            <span>{branding.secondary.h}º</span>
-                          </div>
-                          <input
-                            type="range" min="0" max="360"
-                            value={branding.secondary.h}
-                            onChange={(e) => handleColorChange('secondary', 'h', Number(e.target.value))}
-                            className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-secondary"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="rounded-2xl border border-zinc-900 bg-zinc-900/20 p-6 space-y-4">
-                    <h2 className="text-sm font-bold tracking-wider text-zinc-400 uppercase">Validador de Contraste WCAG</h2>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="p-3.5 rounded-xl bg-zinc-950 border border-zinc-900">
-                        <div className="text-[10px] text-zinc-500 font-medium">Contraste vs Fondo Oscuro</div>
-                        <div className="text-lg font-bold mt-1 text-zinc-200">{primaryContrast.toFixed(2)}:1</div>
-                        <div className="mt-1">
-                          {primaryContrast >= 3.0 ? (
-                            <span className="text-[10px] font-bold text-emerald-400 px-2 py-0.5 rounded bg-emerald-950/30">Pasa WCAG AA</span>
-                          ) : (
-                            <span className="text-[10px] font-bold text-rose-400 px-2 py-0.5 rounded bg-rose-950/30">No Accesible</span>
-                          )}
-                        </div>
-                      </div>
-
-                      <div className="p-3.5 rounded-xl bg-zinc-950 border border-zinc-900">
-                        <div className="text-[10px] text-zinc-500 font-medium">Contraste vs Texto Claro</div>
-                        <div className="text-lg font-bold mt-1 text-zinc-200">{textContrast.toFixed(2)}:1</div>
-                        <div className="mt-1">
-                          {textContrast >= 3.0 ? (
-                            <span className="text-[10px] font-bold text-emerald-400 px-2 py-0.5 rounded bg-emerald-950/30">Pasa WCAG AA</span>
-                          ) : (
-                            <span className="text-[10px] font-bold text-rose-400 px-2 py-0.5 rounded bg-rose-950/30">No Accesible</span>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-
-              {activeComponent === 'background' && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.25, ease: 'easeInOut' }}
-                  className="space-y-6 overflow-hidden"
-                >
-                  <div className="rounded-2xl border border-zinc-900 bg-zinc-900/20 p-6 space-y-6">
-                    <div>
-                      <h2 className="text-sm font-bold tracking-wider text-zinc-400 uppercase">Ajustes del Fondo Respirable</h2>
-                      <p className="text-xs text-zinc-500 mt-1">
-                        Personaliza los parámetros del componente y observa cómo respira en tiempo real.
-                      </p>
-                    </div>
-
-                    <div className="space-y-4">
-                      {/* Color 1 Hue */}
-                      <div>
-                        <div className="flex justify-between text-[11px] text-zinc-400 mb-1">
-                          <span>Matiz Color 1 (H)</span>
-                          <span>{backgroundConfig.color1.h}º</span>
-                        </div>
-                        <input
-                          type="range" min="0" max="360"
-                          value={backgroundConfig.color1.h}
-                          onChange={(e) => setBackgroundConfig({
-                            color1: { ...backgroundConfig.color1, h: Number(e.target.value) }
-                          })}
-                          className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-primary"
-                        />
-                      </div>
-
-                      {/* Color 2 Hue */}
-                      <div>
-                        <div className="flex justify-between text-[11px] text-zinc-400 mb-1">
-                          <span>Matiz Color 2 (H)</span>
-                          <span>{backgroundConfig.color2.h}º</span>
-                        </div>
-                        <input
-                          type="range" min="0" max="360"
-                          value={backgroundConfig.color2.h}
-                          onChange={(e) => setBackgroundConfig({
-                            color2: { ...backgroundConfig.color2, h: Number(e.target.value) }
-                          })}
-                          className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-accent"
-                        />
-                      </div>
-
-                      {/* Velocidad */}
-                      <div>
-                        <div className="flex justify-between text-[11px] text-zinc-400 mb-1">
-                          <span>Duración del Ciclo (Velocidad)</span>
-                          <span>{backgroundConfig.speed}s</span>
-                        </div>
-                        <input
-                          type="range" min="2" max="30" step="1"
-                          value={backgroundConfig.speed}
-                          onChange={(e) => setBackgroundConfig({ speed: Number(e.target.value) })}
-                          className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-primary"
-                        />
-                      </div>
-
-                      {/* Opacidad */}
-                      <div>
-                        <div className="flex justify-between text-[11px] text-zinc-400 mb-1">
-                          <span>Opacidad</span>
-                          <span>{Math.round(backgroundConfig.opacity * 100)}%</span>
-                        </div>
-                        <input
-                          type="range" min="0.05" max="0.9" step="0.05"
-                          value={backgroundConfig.opacity}
-                          onChange={(e) => setBackgroundConfig({ opacity: Number(e.target.value) })}
-                          className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-primary"
-                        />
-                      </div>
-
-                      {/* Blur */}
-                      <div>
-                        <div className="flex justify-between text-[11px] text-zinc-400 mb-1">
-                          <span>Desenfoque (Blur)</span>
-                          <span>{backgroundConfig.blur}px</span>
-                        </div>
-                        <input
-                          type="range" min="10" max="180" step="5"
-                          value={backgroundConfig.blur}
-                          onChange={(e) => setBackgroundConfig({ blur: Number(e.target.value) })}
-                          className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-primary"
-                        />
-                      </div>
-
-                      {/* Rango de Movimiento */}
-                      <div>
-                        <div className="flex justify-between text-[11px] text-zinc-400 mb-1">
-                          <span>Rango de Movimiento</span>
-                          <span>{backgroundConfig.movementRange}px</span>
-                        </div>
-                        <input
-                          type="range" min="0" max="150" step="5"
-                          value={backgroundConfig.movementRange}
-                          onChange={(e) => setBackgroundConfig({ movementRange: Number(e.target.value) })}
-                          className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-primary"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
+            {/* Controles de ajustes removidos de la barra lateral de catálogo */}
           </section>
 
           {/* Right Panel */}
@@ -561,24 +334,137 @@ function App() {
                     className="h-full"
                   >
                     {activeComponent === 'branding' && (
-                      <div className="p-6 rounded-2xl border border-zinc-900 bg-zinc-900/10 space-y-6">
-                        <div>
-                          <h3 className="text-lg font-bold text-zinc-100">Visor de Derivación del Branding HSL</h3>
-                          <p className="text-xs text-zinc-400 mt-1">
-                            Calculamos automáticamente variaciones de color en base a cálculos matemáticos usando las variables nativas HSL.
-                          </p>
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                          <div className="p-5 rounded-2xl border border-zinc-800 bg-zinc-900/40 flex flex-col space-y-2">
-                            <span className="text-xs font-semibold text-zinc-300">Variaciones del Primario</span>
-                            <div className="h-10 rounded-lg bg-primary flex items-center justify-center text-xs font-mono font-bold text-white shadow-lg shadow-primary/10">
-                              Principal
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {/* Control Sliders Column */}
+                        <div className="p-6 rounded-2xl border border-zinc-900 bg-zinc-900/20 space-y-5">
+                          <div>
+                            <h3 className="text-xs font-bold tracking-wider text-zinc-400 uppercase">Ajustes de Branding HSL</h3>
+                            <p className="text-xs text-zinc-500 mt-1">
+                              Modifica las variables HSL dinámicas de este tenant.
+                            </p>
+                          </div>
+
+                          <div className="space-y-4">
+                            <div className="flex items-center justify-between">
+                              <span className="text-xs font-semibold text-zinc-300">Color Primario</span>
+                              <div className="w-4 h-4 rounded-full bg-primary" />
                             </div>
-                            <div
-                              style={{ backgroundColor: `hsl(var(--primary-h) var(--primary-s) calc(var(--primary-l) - 10%))` }}
-                              className="h-10 rounded-lg flex items-center justify-center text-xs font-mono font-bold text-white shadow-md"
-                            >
-                              Hover (-10% Lightness)
+                            
+                            <div className="space-y-3">
+                              <div>
+                                <div className="flex justify-between text-[11px] text-zinc-400 mb-1">
+                                  <span>Hue (Matiz)</span>
+                                  <span>{branding.primary.h}º</span>
+                                </div>
+                                <input
+                                  type="range" min="0" max="360"
+                                  value={branding.primary.h}
+                                  onChange={(e) => handleColorChange('primary', 'h', Number(e.target.value))}
+                                  className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-primary"
+                                />
+                              </div>
+
+                              <div>
+                                <div className="flex justify-between text-[11px] text-zinc-400 mb-1">
+                                  <span>Saturation (Saturación)</span>
+                                  <span>{branding.primary.s}%</span>
+                                </div>
+                                <input
+                                  type="range" min="0" max="100"
+                                  value={branding.primary.s}
+                                  onChange={(e) => handleColorChange('primary', 's', Number(e.target.value))}
+                                  className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-primary"
+                                />
+                              </div>
+
+                              <div>
+                                <div className="flex justify-between text-[11px] text-zinc-400 mb-1">
+                                  <span>Lightness (Luminosidad)</span>
+                                  <span>{branding.primary.l}%</span>
+                                </div>
+                                <input
+                                  type="range" min="0" max="100"
+                                  value={branding.primary.l}
+                                  onChange={(e) => handleColorChange('primary', 'l', Number(e.target.value))}
+                                  className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-primary"
+                                />
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="space-y-4 pt-4 border-t border-zinc-900">
+                            <div className="flex items-center justify-between">
+                              <span className="text-xs font-semibold text-zinc-300">Color Secundario</span>
+                              <div className="w-4 h-4 rounded-full bg-secondary" />
+                            </div>
+                            
+                            <div className="space-y-3">
+                              <div>
+                                <div className="flex justify-between text-[11px] text-zinc-400 mb-1">
+                                  <span>Hue</span>
+                                  <span>{branding.secondary.h}º</span>
+                                </div>
+                                <input
+                                  type="range" min="0" max="360"
+                                  value={branding.secondary.h}
+                                  onChange={(e) => handleColorChange('secondary', 'h', Number(e.target.value))}
+                                  className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-secondary"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Showcase & Validation Column */}
+                        <div className="space-y-6">
+                          {/* Validador WCAG */}
+                          <div className="p-6 rounded-2xl border border-zinc-900 bg-zinc-900/20 space-y-4">
+                            <h3 className="text-xs font-bold tracking-wider text-zinc-400 uppercase">Validador de Contraste WCAG</h3>
+                            <div className="grid grid-cols-2 gap-4">
+                              <div className="p-3.5 rounded-xl bg-zinc-950 border border-zinc-900">
+                                <div className="text-[10px] text-zinc-500 font-medium">Contraste vs Fondo Oscuro</div>
+                                <div className="text-lg font-bold mt-1 text-zinc-200">{primaryContrast.toFixed(2)}:1</div>
+                                <div className="mt-1">
+                                  {primaryContrast >= 3.0 ? (
+                                    <span className="text-[10px] font-bold text-emerald-400 px-2 py-0.5 rounded bg-emerald-950/30">Pasa WCAG AA</span>
+                                  ) : (
+                                    <span className="text-[10px] font-bold text-rose-400 px-2 py-0.5 rounded bg-rose-950/30">No Accesible</span>
+                                  )}
+                                </div>
+                              </div>
+
+                              <div className="p-3.5 rounded-xl bg-zinc-950 border border-zinc-900">
+                                <div className="text-[10px] text-zinc-500 font-medium">Contraste vs Texto Claro</div>
+                                <div className="text-lg font-bold mt-1 text-zinc-200">{textContrast.toFixed(2)}:1</div>
+                                <div className="mt-1">
+                                  {textContrast >= 3.0 ? (
+                                    <span className="text-[10px] font-bold text-emerald-400 px-2 py-0.5 rounded bg-emerald-950/30">Pasa WCAG AA</span>
+                                  ) : (
+                                    <span className="text-[10px] font-bold text-rose-400 px-2 py-0.5 rounded bg-rose-950/30">No Accesible</span>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Derivación Visual */}
+                          <div className="p-6 rounded-2xl border border-zinc-900 bg-zinc-900/10 space-y-4">
+                            <div>
+                              <h3 className="text-xs font-bold tracking-wider text-zinc-400 uppercase">Derivación Matemática</h3>
+                              <p className="text-[11px] text-zinc-500 mt-1">
+                                Derivado nativamente con CSS.
+                              </p>
+                            </div>
+                            <div className="space-y-3">
+                              <div className="h-10 rounded-lg bg-primary flex items-center justify-center text-xs font-mono font-bold text-white shadow-lg shadow-primary/10">
+                                Principal
+                              </div>
+                              <div
+                                style={{ backgroundColor: `hsl(var(--primary-h) var(--primary-s) calc(var(--primary-l) - 10%))` }}
+                                className="h-10 rounded-lg flex items-center justify-center text-xs font-mono font-bold text-white shadow-md"
+                              >
+                                Hover (-10% Lightness)
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -678,40 +564,143 @@ function App() {
                     )}
 
                     {activeComponent === 'background' && (
-                      <div className="p-8 rounded-2xl border border-zinc-900 bg-zinc-900/10 flex flex-col items-center justify-center space-y-6 min-h-[420px] relative overflow-hidden">
-                        {/* Breathing background preview inside container */}
-                        <BreathingBackground
-                          color1={backgroundConfig.color1}
-                          color2={backgroundConfig.color2}
-                          speed={backgroundConfig.speed}
-                          blur={backgroundConfig.blur}
-                          opacity={backgroundConfig.opacity}
-                          movementRange={backgroundConfig.movementRange}
-                          scaleRange={[backgroundConfig.scaleMin, backgroundConfig.scaleMax]}
-                        />
-                        
-                        <div className="z-10 text-center max-w-md space-y-4 p-6 rounded-2xl bg-zinc-950/85 border border-white/5 backdrop-blur-md shadow-2xl">
-                          <h3 className="text-base font-bold text-zinc-100">Fondo Respirando</h3>
-                          <p className="text-xs text-zinc-400 leading-relaxed">
-                            El contenedor exterior está usando el componente `BreathingBackground`. Mueve el cursor sobre esta visualización para interactuar con el fondo.
-                          </p>
-                          
-                          <div className="flex justify-center pt-2">
-                            <button
-                              onClick={() => setIsBgModalOpen(true)}
-                              className="px-4 py-2 rounded-xl bg-primary hover:bg-primary-hover text-white text-xs font-semibold transition-all shadow-md shadow-primary/20 active:scale-95 cursor-pointer flex items-center space-x-1.5"
-                            >
-                              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75v4.5m0-4.5h-4.5m4.5 0L15 9m5.25 11.25v-4.5m0 4.5h-4.5m4.5 0l-6-6" />
-                              </svg>
-                              <span>Probar en Pantalla Completa (Modal)</span>
-                            </button>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {/* Adjustments column */}
+                        <div className="p-6 rounded-2xl border border-zinc-900 bg-zinc-900/20 space-y-5">
+                          <div>
+                            <h3 className="text-xs font-bold tracking-wider text-zinc-400 uppercase">Ajustes del Fondo</h3>
+                            <p className="text-xs text-zinc-500 mt-1">
+                              Personaliza los parámetros del fondo respirable en tiempo real.
+                            </p>
                           </div>
 
-                          <div className="pt-2 flex justify-center space-x-4 text-[10px] text-zinc-500 font-mono border-t border-white/5">
-                            <span>FPS: ~60 (GPU)</span>
-                            <span>•</span>
-                            <span>Interactividad: Sí</span>
+                          <div className="space-y-4">
+                            {/* Color 1 Hue */}
+                            <div>
+                              <div className="flex justify-between text-[11px] text-zinc-400 mb-1">
+                                <span>Matiz Color 1 (H)</span>
+                                <span>{backgroundConfig.color1.h}º</span>
+                              </div>
+                              <input
+                                type="range" min="0" max="360"
+                                value={backgroundConfig.color1.h}
+                                onChange={(e) => setBackgroundConfig({
+                                  color1: { ...backgroundConfig.color1, h: Number(e.target.value) }
+                                })}
+                                className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-primary"
+                              />
+                            </div>
+
+                            {/* Color 2 Hue */}
+                            <div>
+                              <div className="flex justify-between text-[11px] text-zinc-400 mb-1">
+                                <span>Matiz Color 2 (H)</span>
+                                <span>{backgroundConfig.color2.h}º</span>
+                              </div>
+                              <input
+                                type="range" min="0" max="360"
+                                value={backgroundConfig.color2.h}
+                                onChange={(e) => setBackgroundConfig({
+                                  color2: { ...backgroundConfig.color2, h: Number(e.target.value) }
+                                })}
+                                className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-accent"
+                              />
+                            </div>
+
+                            {/* Velocidad */}
+                            <div>
+                              <div className="flex justify-between text-[11px] text-zinc-400 mb-1">
+                                <span>Duración del Ciclo (Velocidad)</span>
+                                <span>{backgroundConfig.speed}s</span>
+                              </div>
+                              <input
+                                type="range" min="2" max="30" step="1"
+                                value={backgroundConfig.speed}
+                                onChange={(e) => setBackgroundConfig({ speed: Number(e.target.value) })}
+                                className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-primary"
+                              />
+                            </div>
+
+                            {/* Opacidad */}
+                            <div>
+                              <div className="flex justify-between text-[11px] text-zinc-400 mb-1">
+                                <span>Opacidad</span>
+                                <span>{Math.round(backgroundConfig.opacity * 100)}%</span>
+                              </div>
+                              <input
+                                type="range" min="0.05" max="0.9" step="0.05"
+                                value={backgroundConfig.opacity}
+                                onChange={(e) => setBackgroundConfig({ opacity: Number(e.target.value) })}
+                                className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-primary"
+                              />
+                            </div>
+
+                            {/* Blur */}
+                            <div>
+                              <div className="flex justify-between text-[11px] text-zinc-400 mb-1">
+                                <span>Desenfoque (Blur)</span>
+                                <span>{backgroundConfig.blur}px</span>
+                              </div>
+                              <input
+                                type="range" min="10" max="180" step="5"
+                                value={backgroundConfig.blur}
+                                onChange={(e) => setBackgroundConfig({ blur: Number(e.target.value) })}
+                                className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-primary"
+                              />
+                            </div>
+
+                            {/* Rango de Movimiento */}
+                            <div>
+                              <div className="flex justify-between text-[11px] text-zinc-400 mb-1">
+                                <span>Rango de Movimiento</span>
+                                <span>{backgroundConfig.movementRange}px</span>
+                              </div>
+                              <input
+                                type="range" min="0" max="150" step="5"
+                                value={backgroundConfig.movementRange}
+                                onChange={(e) => setBackgroundConfig({ movementRange: Number(e.target.value) })}
+                                className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-primary"
+                              />
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Interactive Preview Canvas */}
+                        <div className="p-8 rounded-2xl border border-zinc-900 bg-zinc-900/10 flex flex-col items-center justify-center space-y-6 min-h-[420px] relative overflow-hidden">
+                          {/* Breathing background preview inside container */}
+                          <BreathingBackground
+                            color1={backgroundConfig.color1}
+                            color2={backgroundConfig.color2}
+                            speed={backgroundConfig.speed}
+                            blur={backgroundConfig.blur}
+                            opacity={backgroundConfig.opacity}
+                            movementRange={backgroundConfig.movementRange}
+                            scaleRange={[backgroundConfig.scaleMin, backgroundConfig.scaleMax]}
+                          />
+                          
+                          <div className="z-10 text-center max-w-sm space-y-4 p-5 rounded-2xl bg-zinc-950/85 border border-white/5 backdrop-blur-md shadow-2xl">
+                            <h4 className="text-sm font-bold text-zinc-100 font-sans">Fondo Respirando</h4>
+                            <p className="text-[11px] text-zinc-400 leading-relaxed">
+                              El contenedor exterior está usando el componente `BreathingBackground`. Mueve el cursor sobre esta visualización para interactuar con el fondo.
+                            </p>
+                            
+                            <div className="flex justify-center">
+                              <button
+                                onClick={() => setIsBgModalOpen(true)}
+                                className="px-3.5 py-2 rounded-xl bg-primary hover:bg-primary-hover text-white text-[10px] font-semibold transition-all shadow-md shadow-primary/20 active:scale-95 cursor-pointer flex items-center space-x-1.5"
+                              >
+                                <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75v4.5m0-4.5h-4.5m4.5 0L15 9m5.25 11.25v-4.5m0 4.5h-4.5m4.5 0l-6-6" />
+                                </svg>
+                                <span>Ver Pantalla Completa</span>
+                              </button>
+                            </div>
+
+                            <div className="pt-2 flex justify-center space-x-3 text-[9px] text-zinc-500 font-mono border-t border-white/5">
+                              <span>FPS: ~60</span>
+                              <span>•</span>
+                              <span>GPU: Activa</span>
+                            </div>
                           </div>
                         </div>
                       </div>
