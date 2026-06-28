@@ -13,7 +13,13 @@ export const SchemaFormGenerator = ({
 
   useEffect(() => {
     try {
+      if (typeof schemaJson !== 'string') {
+        throw new Error('El esquema debe ser una cadena de texto JSON.')
+      }
       const parsed = JSON.parse(schemaJson)
+      if (!parsed || typeof parsed !== 'object') {
+        throw new Error('El esquema debe ser un objeto JSON válido.')
+      }
       if (!parsed.properties || typeof parsed.properties !== 'object') {
         throw new Error('El esquema debe contener un objeto "properties".')
       }
@@ -22,6 +28,7 @@ export const SchemaFormGenerator = ({
 
       const initialValues = {}
       Object.entries(parsed.properties).forEach(([key, prop]) => {
+        if (!prop || typeof prop !== 'object') return
         if (prop.default !== undefined) {
           initialValues[key] = prop.default
         } else if (prop.type === 'boolean') {
@@ -41,11 +48,13 @@ export const SchemaFormGenerator = ({
   }, [schemaJson])
 
   const handleInputChange = (key, value, property) => {
+    if (!property || typeof property !== 'object') return
     const updatedValues = { ...values, [key]: value }
     setValues(updatedValues)
 
     const updatedErrors = { ...errors }
-    if (schema?.required?.includes(key) && !value && value !== 0 && value !== false) {
+    const isRequired = Array.isArray(schema?.required) && schema.required.includes(key)
+    if (isRequired && !value && value !== 0 && value !== false) {
       updatedErrors[key] = `El campo "${property.title || key}" es obligatorio.`
     } else if (property.type === 'number') {
       const numVal = Number(value)
@@ -71,7 +80,8 @@ export const SchemaFormGenerator = ({
     if (!schema) return
 
     const validationErrors = {}
-    schema.required?.forEach((key) => {
+    const requiredList = Array.isArray(schema.required) ? schema.required : []
+    requiredList.forEach((key) => {
       const val = values[key]
       if (!val && val !== 0 && val !== false) {
         validationErrors[key] = 'Este campo es obligatorio.'
@@ -118,7 +128,8 @@ export const SchemaFormGenerator = ({
 
       <div className="space-y-5">
         {Object.entries(schema.properties).map(([key, prop]) => {
-          const isRequired = schema.required?.includes(key)
+          if (!prop || typeof prop !== 'object') return null
+          const isRequired = Array.isArray(schema.required) && schema.required.includes(key)
           const error = errors[key]
 
           return (

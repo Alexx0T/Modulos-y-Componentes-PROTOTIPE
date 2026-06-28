@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 export const ComponentCalendar = ({ components }) => {
+  const safeComponents = Array.isArray(components) ? components : []
   const [currentYear] = useState(2026)
   const [currentMonth] = useState(5)
   const [selectedDayComponents, setSelectedDayComponents] = useState([])
@@ -34,7 +35,7 @@ export const ComponentCalendar = ({ components }) => {
   const handleDayClick = (day) => {
     if (!day) return
     const dateStr = getFormattedDate(day)
-    const filtered = components.filter(c => c.date === dateStr)
+    const filtered = safeComponents.filter(c => c && typeof c === 'object' && c.date === dateStr)
     setSelectedDayComponents(filtered)
     setSelectedDateStr(dateStr)
   }
@@ -62,7 +63,7 @@ export const ComponentCalendar = ({ components }) => {
             }
 
             const dateStr = getFormattedDate(day)
-            const dayComponents = components.filter(c => c.date === dateStr)
+            const dayComponents = safeComponents.filter(c => c && typeof c === 'object' && c.date === dateStr)
             const hasComponents = dayComponents.length > 0
             const isSelected = selectedDateStr === dateStr
 
@@ -112,19 +113,22 @@ export const ComponentCalendar = ({ components }) => {
                 exit={{ opacity: 0, x: -10 }}
                 className="space-y-3"
               >
-                {selectedDayComponents.map(comp => (
-                  <div
-                    key={comp.id}
-                    className="p-4 rounded-xl border border-zinc-800 bg-zinc-950/60 space-y-2"
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-primary">{comp.category}</span>
-                      <span className="text-[10px] text-zinc-500 font-mono">v1.0.0</span>
+                {selectedDayComponents.map(comp => {
+                  if (!comp || typeof comp !== 'object') return null
+                  return (
+                    <div
+                      key={comp.id || Math.random().toString()}
+                      className="p-4 rounded-xl border border-zinc-800 bg-zinc-950/60 space-y-2"
+                    >
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-bold text-primary">{comp.category || 'General'}</span>
+                        <span className="text-[10px] text-zinc-500 font-mono">v1.0.0</span>
+                      </div>
+                      <h5 className="font-bold text-zinc-100">{comp.name || 'Component'}</h5>
+                      <p className="text-xs text-zinc-400 leading-relaxed">{comp.description || ''}</p>
                     </div>
-                    <h5 className="font-bold text-zinc-100">{comp.name}</h5>
-                    <p className="text-xs text-zinc-400 leading-relaxed">{comp.description}</p>
-                  </div>
-                ))}
+                  )
+                })}
               </motion.div>
             ) : (
               <motion.div

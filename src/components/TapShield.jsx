@@ -9,8 +9,9 @@ export const TapShield = ({
   children
 }) => {
   useEffect(() => {
+    if (typeof document === 'undefined') return
     const handleKeyDown = (e) => {
-      if (e.key === 'Escape') onClose()
+      if (e.key === 'Escape' && typeof onClose === 'function') onClose()
     }
     if (isOpen) {
       document.body.style.overflow = 'hidden'
@@ -52,7 +53,7 @@ export const TapShield = ({
               </svg>
             </button>
 
-            <h3 className="text-xl font-bold text-zinc-100 mb-2">{title}</h3>
+            {title && <h3 className="text-xl font-bold text-zinc-100 mb-2">{title}</h3>}
             
             <div className="mt-4 text-sm text-zinc-300 leading-relaxed min-h-[100px]">
               {children}

@@ -37,11 +37,23 @@ export const BrandingContext = React.createContext({
 })
 
 export const DynamicBrandingProvider = ({ primary, children }) => {
+  // Validate and sanitize primary HSL input to avoid crashes on bad tenant configs
+  const sanitizeColor = (color) => {
+    if (!color || typeof color !== 'object') {
+      return { h: 262, s: 83, l: 58 } // safe default
+    }
+    const h = typeof color.h === 'number' && !isNaN(color.h) ? Math.max(0, Math.min(360, color.h)) : 262
+    const s = typeof color.s === 'number' && !isNaN(color.s) ? Math.max(0, Math.min(100, color.s)) : 83
+    const l = typeof color.l === 'number' && !isNaN(color.l) ? Math.max(0, Math.min(100, color.l)) : 58
+    return { h, s, l }
+  }
+
+  const safePrimary = sanitizeColor(primary)
   const darkBg = { h: 220, s: 20, l: 3 }
   const lightText = { h: 0, s: 0, l: 95 }
 
-  const primaryContrastWithDarkBg = getContrastRatio(primary, darkBg)
-  const primaryContrastWithLightText = getContrastRatio(primary, lightText)
+  const primaryContrastWithDarkBg = getContrastRatio(safePrimary, darkBg)
+  const primaryContrastWithLightText = getContrastRatio(safePrimary, lightText)
   
   const isAccessible = primaryContrastWithDarkBg >= 3.0 || primaryContrastWithLightText >= 3.0
 
