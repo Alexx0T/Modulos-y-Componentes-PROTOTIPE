@@ -36,13 +36,13 @@ export function BreathingBackground({
     ? scaleRange.map(v => Math.max(0.1, Math.min(5, v)))
     : [0.8, 1.2]
 
-  // Motion values to track mouse coordinate offsets
+  // Motion values to track mouse coordinate offsets (-1 to 1)
   const mouseX = useMotionValue(0)
   const mouseY = useMotionValue(0)
 
-  // Smooth springs to animate mouse interactions lag-free
-  const springX = useSpring(mouseX, { stiffness: 45, damping: 15 })
-  const springY = useSpring(mouseY, { stiffness: 45, damping: 15 })
+  // Responsive spring configuration for smooth cursor tracking
+  const springX = useSpring(mouseX, { stiffness: 60, damping: 20 })
+  const springY = useSpring(mouseY, { stiffness: 60, damping: 20 })
 
   // Transform outputs for inverted parallax movement
   const springXInverted = useTransform(springX, (v) => -v)
@@ -56,17 +56,19 @@ export function BreathingBackground({
       const normX = (e.clientX / window.innerWidth) - 0.5
       const normY = (e.clientY / window.innerHeight) - 0.5
 
-      // Scale cursor offset using the movement range parameter (multiplied for sensible shift feel)
-      const strengthFactor = clampedMovement * 1.8
-      mouseX.set(normX * strengthFactor)
-      mouseY.set(normY * strengthFactor)
+      // Calculate translation range based on viewport dimensions to make it clearly visible (e.g. 12% of screen size)
+      const maxShiftX = window.innerWidth * 0.12
+      const maxShiftY = window.innerHeight * 0.12
+
+      mouseX.set(normX * maxShiftX)
+      mouseY.set(normY * maxShiftY)
     }
 
     window.addEventListener('mousemove', handleMouseMove)
     return () => {
       window.removeEventListener('mousemove', handleMouseMove)
     }
-  }, [clampedMovement, mouseX, mouseY])
+  }, [mouseX, mouseY])
 
   return (
     <div
