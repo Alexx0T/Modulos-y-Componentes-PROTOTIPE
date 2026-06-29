@@ -2,6 +2,7 @@
 title Ecosistema PROTOTIPE - Consola de Control
 chcp 65001 >nul
 color 0F
+cd /d "%~dp0"
 
 :menu
 cls
