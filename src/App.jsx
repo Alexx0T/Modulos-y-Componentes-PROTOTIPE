@@ -9,7 +9,7 @@ import { DigitalClock } from './components/DigitalClock.jsx'
 import { ComponentCalendar } from './components/ComponentCalendar.jsx'
 import QuantitySelector from './components/QuantitySelector.jsx'
 import { BreathingBackground } from './components/BreathingBackground.jsx'
-import { PrototipeLogo } from './components/PrototipeLogo.jsx'
+import { PrototipeLogo } from '../modulos y componentes/PrototipeLogo/PrototipeLogo.jsx'
 
 function App() {
   const {
@@ -116,6 +116,15 @@ function App() {
             <path d="M7 10h10" />
           </svg>
         )
+      case 'prototipelogo':
+        return (
+          <svg className="w-8 h-8 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2" />
+            <line x1="12" y1="22" x2="12" y2="12" />
+            <line x1="22" y1="8.5" x2="12" y2="12" />
+            <line x1="2" y1="8.5" x2="12" y2="12" />
+          </svg>
+        )
       default:
         return (
           <svg className="w-8 h-8 text-zinc-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -195,7 +204,6 @@ function App() {
   return (
     <DynamicBrandingProvider primary={branding.primary}>
       <div className="relative w-screen h-screen bg-zinc-950 text-zinc-100 flex overflow-hidden antialiased font-sans">
-        {/* Global Page Background */}
         <BreathingBackground
           color1={backgroundConfig.color1}
           color2={backgroundConfig.color2}
@@ -207,9 +215,7 @@ function App() {
           className="fixed inset-0 z-0 pointer-events-none"
         />
 
-        {/* SIDEBAR */}
         <aside className="w-80 h-full border-r border-zinc-900 bg-zinc-950/80 backdrop-blur-xl flex flex-col shrink-0 z-20 relative">
-          {/* Logo / Brand */}
           <div className="p-6 border-b border-zinc-900/60 flex items-center space-x-3">
             <div className="w-10 h-10 flex-shrink-0">
               <PrototipeLogo className="w-full h-full" animated={true} />
@@ -222,9 +228,7 @@ function App() {
             </div>
           </div>
 
-          {/* Navigation & Search */}
           <div className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin">
-            {/* Navigation buttons */}
             <button
               onClick={() => setActiveComponent('dashboard')}
               className={`w-full text-left px-3.5 py-3 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center space-x-3 border ${
@@ -242,7 +246,6 @@ function App() {
             <div className="pt-2 border-t border-zinc-900/60">
               <h2 className="text-[10px] font-bold tracking-wider text-zinc-500 uppercase px-2 mb-2">Componentes</h2>
               
-              {/* Buscador */}
               <div className="relative mb-3">
                 <input
                   type="text"
@@ -264,7 +267,6 @@ function App() {
                 )}
               </div>
 
-              {/* Categorías */}
               <div className="flex flex-wrap gap-1 mb-3">
                 {['Todos', 'Branding', 'UI Core', 'AI Integration', 'Utility', 'Core Dashboard', 'UI Atomic', 'UI Background'].map((cat) => {
                   const isSel = selectedCategory === cat;
@@ -284,79 +286,33 @@ function App() {
                 })}
               </div>
 
-              {/* Component List */}
-              <div className="space-y-1">
+              {/* Component List Grid (Only Logos) */}
+              <div className="grid grid-cols-4 gap-2">
                 {filteredComponents.length > 0 ? (
                   filteredComponents.map((comp) => {
                     const isActive = activeComponent === comp.id;
                     return (
                       <button
                         key={comp.id}
+                        title={`${comp.name} - ${comp.category}`}
                         onClick={() => {
                           setActiveComponent(comp.id)
                           setActiveTab('preview')
                         }}
-                        className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center justify-between border ${
+                        className={`w-full aspect-square rounded-xl flex items-center justify-center transition-all cursor-pointer border ${
                           isActive
-                            ? 'bg-primary/10 border-primary/25 text-primary shadow shadow-primary/5'
-                            : 'border-transparent text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/40'
+                            ? 'bg-primary/10 border-primary/40 text-primary shadow-lg shadow-primary/10 scale-105'
+                            : 'border-transparent bg-zinc-900/30 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 hover:border-zinc-700'
                         }`}
                       >
-                        <div className="flex items-center space-x-2.5 truncate">
-                          {comp.id === 'branding' && (
-                            <svg className="w-3.5 h-3.5 text-current shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M9.53 16.122a3 3 0 00-2.235 2.236m11.352-8.24a3 3 0 10-4.243-4.242L4.05 16.293a3 3 0 01-1.285.786l-2.083.694a1 1 0 00-1.185 1.185l.694 2.083c.2.6.47 1.15.825 1.637m15.885-16.73L13.5 12" />
-                            </svg>
-                          )}
-                          {comp.id === 'form' && (
-                            <svg className="w-3.5 h-3.5 text-current shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                            </svg>
-                          )}
-                          {comp.id === 'chat' && (
-                            <svg className="w-3.5 h-3.5 text-current shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                            </svg>
-                          )}
-                          {comp.id === 'clock' && (
-                            <svg className="w-3.5 h-3.5 text-current shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                          )}
-                          {comp.id === 'calendar' && (
-                            <svg className="w-3.5 h-3.5 text-current shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                            </svg>
-                          )}
-                          {comp.id === 'quantity' && (
-                            <svg className="w-3.5 h-3.5 text-current shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                          )}
-                          {comp.id === 'tapshield' && (
-                            <svg className="w-3.5 h-3.5 text-current shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                            </svg>
-                          )}
-                          {comp.id === 'background' && (
-                            <svg className="w-3.5 h-3.5 text-current shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z" />
-                            </svg>
-                          )}
-                          <span className="truncate">{comp.name}</span>
+                        <div className="transform scale-[0.6] pointer-events-none flex items-center justify-center">
+                          {getComponentIcon(comp.id)}
                         </div>
-                        <span className={`text-[8px] px-1.5 py-0.5 rounded border font-mono capitalize shrink-0 ${
-                          isActive 
-                            ? 'bg-primary/20 border-primary/30 text-primary' 
-                            : 'bg-zinc-950 border-zinc-900 text-zinc-500'
-                        }`}>
-                          {comp.category.split(' ')[0]}
-                        </span>
                       </button>
                     );
                   })
                 ) : (
-                  <div className="text-zinc-600 text-[10px] py-4 text-center border border-dashed border-zinc-900 rounded-xl bg-zinc-950/20">
+                  <div className="col-span-4 text-zinc-600 text-[10px] py-4 text-center border border-dashed border-zinc-900 rounded-xl bg-zinc-950/20">
                     Sin coincidencias.
                   </div>
                 )}
@@ -364,7 +320,6 @@ function App() {
             </div>
           </div>
 
-          {/* Sidebar Footer */}
           <div className="p-4 border-t border-zinc-900/60 space-y-3 bg-zinc-950/40">
             <button
               onClick={resetBranding}
@@ -379,11 +334,9 @@ function App() {
           </div>
         </aside>
 
-        {/* MAIN VISUALIZATION AREA */}
         <main className="flex-1 h-full overflow-y-auto flex flex-col relative z-10">
           <AnimatePresence mode="wait">
             {activeComponent === 'dashboard' ? (
-              /* PANTALLA PRINCIPAL (DASHBOARD) */
               <motion.div
                 key="dashboard"
                 initial={{ opacity: 0, y: 15 }}
@@ -393,7 +346,6 @@ function App() {
                 className="p-8 max-w-6xl w-full mx-auto space-y-8 flex-1 flex flex-col justify-between"
               >
                 <div className="space-y-8">
-                  {/* Hero banner */}
                   <div className="relative overflow-hidden rounded-3xl border border-zinc-900 bg-gradient-to-br from-zinc-950/70 via-zinc-900/30 to-primary/5 p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-6 backdrop-blur-md">
                     <div className="space-y-4 max-w-xl text-center md:text-left">
                       <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-mono uppercase tracking-wider">
@@ -415,9 +367,7 @@ function App() {
                     </div>
                   </div>
 
-                  {/* System Stats / Widgets Grid */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    {/* Stat 1 */}
                     <div className="p-5 rounded-2xl border border-zinc-900 bg-zinc-950/40 backdrop-blur-md flex items-center space-x-4">
                       <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -430,7 +380,6 @@ function App() {
                       </div>
                     </div>
 
-                    {/* Stat 2 */}
                     <div className="p-5 rounded-2xl border border-zinc-900 bg-zinc-950/40 backdrop-blur-md flex items-center space-x-4">
                       <div className="w-10 h-10 rounded-xl bg-secondary/10 flex items-center justify-center text-secondary">
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -445,7 +394,6 @@ function App() {
                       </div>
                     </div>
 
-                    {/* Stat 3 */}
                     <div className="p-5 rounded-2xl border border-zinc-900 bg-zinc-950/40 backdrop-blur-md flex items-center space-x-4">
                       <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center text-accent">
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -458,7 +406,6 @@ function App() {
                       </div>
                     </div>
 
-                    {/* Stat 4 */}
                     <div className="p-5 rounded-2xl border border-zinc-900 bg-zinc-950/40 backdrop-blur-md flex items-center space-x-4">
                       <div className="w-10 h-10 rounded-xl bg-zinc-850 flex items-center justify-center text-zinc-400">
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -468,44 +415,6 @@ function App() {
                       <div>
                         <div className="text-[10px] text-zinc-500 uppercase font-mono">Tenant ID</div>
                         <div className="text-xs font-bold text-zinc-400 font-mono truncate max-w-[130px]">PROTOTIPE_Alpha</div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Component Marquee Explorer */}
-                  <div className="space-y-6 overflow-hidden">
-                    <div>
-                      <h2 className="text-sm font-bold tracking-wider text-zinc-300 uppercase">Pasarela de Módulos</h2>
-                      <p className="text-[11px] text-zinc-500">Módulos representados según su funcionalidad en desplazamiento lento. Pasa el cursor para pausar y haz clic para interactuar.</p>
-                    </div>
-
-                    <div className="w-full overflow-hidden relative py-4 border-y border-zinc-900 bg-zinc-950/20 backdrop-blur-sm rounded-2xl">
-                      {/* Gradient Overlays for smooth fading edges */}
-                      <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-zinc-950 to-transparent z-10 pointer-events-none" />
-                      <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-zinc-950 to-transparent z-10 pointer-events-none" />
-                      
-                      <div className="animate-marquee-slow flex space-x-6">
-                        {[...registeredComponents, ...registeredComponents].map((comp, idx) => (
-                          <div 
-                            key={`${comp.id}-${idx}`}
-                            onClick={() => {
-                              setActiveComponent(comp.id)
-                              setActiveTab('preview')
-                            }}
-                            className="w-72 shrink-0 p-5 rounded-2xl border border-zinc-900/80 bg-zinc-950/60 hover:bg-zinc-900/40 hover:border-primary/30 transition-all duration-300 cursor-pointer flex items-center space-x-4 group hover:-translate-y-0.5"
-                          >
-                            <div className="p-3 rounded-xl bg-zinc-900/60 group-hover:scale-110 transition-transform duration-300 border border-zinc-800">
-                              {getComponentIcon(comp.id)}
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <span className="text-[8px] px-2 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-zinc-400 font-mono capitalize">
-                                {comp.category}
-                              </span>
-                              <h3 className="text-xs font-bold text-zinc-200 mt-1.5 group-hover:text-primary transition-colors truncate">{comp.name}</h3>
-                              <p className="text-[10px] text-zinc-500 mt-0.5 line-clamp-1">{comp.description}</p>
-                            </div>
-                          </div>
-                        ))}
                       </div>
                     </div>
                   </div>
