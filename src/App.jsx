@@ -38,12 +38,92 @@ function App() {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('Todos')
   const [isBgModalOpen, setIsBgModalOpen] = useState(false)
+  const [simpleTime, setSimpleTime] = useState(new Date().toLocaleTimeString())
 
-
+  useEffect(() => {
+    const clockTimer = setInterval(() => {
+      setSimpleTime(new Date().toLocaleTimeString())
+    }, 1000)
+    return () => clearInterval(clockTimer)
+  }, [])
 
   useEffect(() => {
     setSchemaText(formSchema)
   }, [formSchema])
+
+  const getComponentIcon = (id) => {
+    switch (id) {
+      case 'branding':
+        return (
+          <svg className="w-8 h-8 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <circle cx="12" cy="12" r="9" />
+            <path d="M12 3v9h9" />
+            <circle cx="7.5" cy="10.5" r="1.5" fill="currentColor" />
+            <circle cx="10.5" cy="7.5" r="1.5" fill="currentColor" />
+            <circle cx="7.5" cy="15" r="1.5" fill="currentColor" />
+          </svg>
+        )
+      case 'form':
+        return (
+          <svg className="w-8 h-8 text-secondary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <rect x="3" y="3" width="18" height="18" rx="2" />
+            <path d="M7 8h10M7 12h10M7 16h5" />
+          </svg>
+        )
+      case 'chat':
+        return (
+          <svg className="w-8 h-8 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+            <path d="M8 10h.01M12 10h.01M16 10h.01" strokeWidth="2" strokeLinecap="round" />
+          </svg>
+        )
+      case 'clock':
+        return (
+          <svg className="w-8 h-8 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <circle cx="12" cy="12" r="9" />
+            <polyline points="12 5 12 12 16 14" />
+          </svg>
+        )
+      case 'calendar':
+        return (
+          <svg className="w-8 h-8 text-secondary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <rect x="3" y="4" width="18" height="18" rx="2" />
+            <line x1="16" y1="2" x2="16" y2="6" />
+            <line x1="8" y1="2" x2="8" y2="6" />
+            <line x1="3" y1="10" x2="21" y2="10" />
+          </svg>
+        )
+      case 'quantity':
+        return (
+          <svg className="w-8 h-8 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <rect x="3" y="7" width="18" height="10" rx="5" />
+            <circle cx="8" cy="12" r="3" fill="currentColor" />
+            <line x1="14" y1="12" x2="18" y2="12" />
+            <line x1="16" y1="10" x2="16" y2="14" />
+          </svg>
+        )
+      case 'tapshield':
+        return (
+          <svg className="w-8 h-8 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            <path d="M9 11l2 2 4-4" strokeWidth="2" />
+          </svg>
+        )
+      case 'background':
+        return (
+          <svg className="w-8 h-8 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <path d="M12 2a5 5 0 0 0-5 5v10a5 5 0 0 0 10 0V7a5 5 0 0 0-5-5z" />
+            <path d="M7 10h10" />
+          </svg>
+        )
+      default:
+        return (
+          <svg className="w-8 h-8 text-zinc-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <rect x="4" y="4" width="16" height="16" rx="2" />
+          </svg>
+        )
+    }
+  }
 
   const filteredComponents = (Array.isArray(registeredComponents) ? registeredComponents : []).filter((comp) => {
     if (!comp || typeof comp !== 'object') return false
@@ -374,7 +454,7 @@ function App() {
                       </div>
                       <div>
                         <div className="text-[10px] text-zinc-500 uppercase font-mono">Hora Local</div>
-                        <div className="text-sm font-bold text-zinc-200"><DigitalClock /></div>
+                        <div className="text-sm font-bold text-zinc-200 font-mono tracking-wider">{simpleTime}</div>
                       </div>
                     </div>
 
@@ -392,39 +472,41 @@ function App() {
                     </div>
                   </div>
 
-                  {/* Component Grid Explorer */}
-                  <div className="space-y-4">
+                  {/* Component Marquee Explorer */}
+                  <div className="space-y-6 overflow-hidden">
                     <div>
-                      <h2 className="text-sm font-bold tracking-wider text-zinc-300 uppercase">Explorar Componentes</h2>
-                      <p className="text-[11px] text-zinc-500">Haz clic en cualquier tarjeta para abrir su playground interactivo y ver la especificación visual HSL.</p>
+                      <h2 className="text-sm font-bold tracking-wider text-zinc-300 uppercase">Pasarela de Módulos</h2>
+                      <p className="text-[11px] text-zinc-500">Módulos representados según su funcionalidad en desplazamiento lento. Pasa el cursor para pausar y haz clic para interactuar.</p>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                      {registeredComponents.map((comp) => (
-                        <div 
-                          key={comp.id}
-                          onClick={() => {
-                            setActiveComponent(comp.id)
-                            setActiveTab('preview')
-                          }}
-                          className="group p-5 rounded-2xl border border-zinc-900 bg-zinc-950/20 hover:bg-zinc-900/20 hover:border-primary/20 transition-all duration-300 cursor-pointer flex flex-col justify-between space-y-4 hover:-translate-y-0.5"
-                        >
-                          <div className="space-y-2">
-                            <div className="flex items-center justify-between">
-                              <span className="text-[9px] px-2 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-zinc-400 font-mono capitalize">
+                    <div className="w-full overflow-hidden relative py-4 border-y border-zinc-900 bg-zinc-950/20 backdrop-blur-sm rounded-2xl">
+                      {/* Gradient Overlays for smooth fading edges */}
+                      <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-zinc-950 to-transparent z-10 pointer-events-none" />
+                      <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-zinc-950 to-transparent z-10 pointer-events-none" />
+                      
+                      <div className="animate-marquee-slow flex space-x-6">
+                        {[...registeredComponents, ...registeredComponents].map((comp, idx) => (
+                          <div 
+                            key={`${comp.id}-${idx}`}
+                            onClick={() => {
+                              setActiveComponent(comp.id)
+                              setActiveTab('preview')
+                            }}
+                            className="w-72 shrink-0 p-5 rounded-2xl border border-zinc-900/80 bg-zinc-950/60 hover:bg-zinc-900/40 hover:border-primary/30 transition-all duration-300 cursor-pointer flex items-center space-x-4 group hover:-translate-y-0.5"
+                          >
+                            <div className="p-3 rounded-xl bg-zinc-900/60 group-hover:scale-110 transition-transform duration-300 border border-zinc-800">
+                              {getComponentIcon(comp.id)}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <span className="text-[8px] px-2 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-zinc-400 font-mono capitalize">
                                 {comp.category}
                               </span>
-                              <span className="text-[9px] text-zinc-600 font-mono">{comp.date}</span>
+                              <h3 className="text-xs font-bold text-zinc-200 mt-1.5 group-hover:text-primary transition-colors truncate">{comp.name}</h3>
+                              <p className="text-[10px] text-zinc-500 mt-0.5 line-clamp-1">{comp.description}</p>
                             </div>
-                            <h3 className="text-sm font-bold text-zinc-200 group-hover:text-primary transition-colors">{comp.name}</h3>
-                            <p className="text-xs text-zinc-500 line-clamp-2 leading-relaxed">{comp.description}</p>
                           </div>
-                          <div className="text-xs font-bold text-primary flex items-center space-x-1.5 group-hover:translate-x-1 transition-all duration-300">
-                            <span>Probar módulo</span>
-                            <span>→</span>
-                          </div>
-                        </div>
-                      ))}
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>
