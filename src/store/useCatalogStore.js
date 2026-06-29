@@ -40,7 +40,7 @@ const DEFAULT_SCHEMA = `{
 
 export const useCatalogStore = create((set) => ({
   branding: DEFAULT_BRANDING,
-  activeComponent: 'branding',
+  activeComponent: 'dashboard',
   chatMessages: [
     {
       id: '1',
