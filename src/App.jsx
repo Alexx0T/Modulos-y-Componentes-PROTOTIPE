@@ -11,6 +11,7 @@ import QuantitySelector from './components/QuantitySelector.jsx'
 import { BreathingBackground } from './components/BreathingBackground.jsx'
 import { PrototipeLogo } from '../modulos y componentes/PrototipeLogo/PrototipeLogo.jsx'
 import { DatePicker, DatePickerBody, DatePickerCalendar, DatePickerInput, DatePickerPanel, DatePickerPopup, DatePickerPortal, DatePickerPositioner } from '../modulos y componentes/DatePicker/DatePicker.jsx'
+import { ErrorBoundary } from './components/ErrorBoundary.jsx'
 
 function App() {
   const {
@@ -40,7 +41,7 @@ function App() {
   const [selectedCategory, setSelectedCategory] = useState('Todos')
   const [isBgModalOpen, setIsBgModalOpen] = useState(false)
   const [simpleTime, setSimpleTime] = useState(new Date().toLocaleTimeString())
-  const [dateRange, setDateRange] = useState(null)
+  const [dateRange, setDateRange] = useState([])
 
   useEffect(() => {
     const clockTimer = setInterval(() => {
@@ -679,33 +680,37 @@ function App() {
                             )}
 
                             {activeComponent === 'calendar' && (
-                              <ComponentCalendar components={registeredComponents} />
+                              <ErrorBoundary>
+                                <ComponentCalendar components={registeredComponents} />
+                              </ErrorBoundary>
                             )}
 
                             {activeComponent === 'datepicker' && (
-                              <div className="p-8 rounded-2xl border border-zinc-900 bg-zinc-900/10 flex flex-col items-center justify-center space-y-6 min-h-[300px]">
-                                <div>
-                                  <h3 className="text-lg font-bold text-zinc-100 text-center">Date Picker Range (Demo)</h3>
-                                  <p className="text-xs text-zinc-400 text-center mt-1">Selecciona un rango de fechas en el calendario.</p>
+                              <ErrorBoundary>
+                                <div className="p-8 rounded-2xl border border-zinc-900 bg-zinc-900/10 flex flex-col items-center justify-center space-y-6 min-h-[300px]">
+                                  <div>
+                                    <h3 className="text-lg font-bold text-zinc-100 text-center">Date Picker Range (Demo)</h3>
+                                    <p className="text-xs text-zinc-400 text-center mt-1">Selecciona un rango de fechas en el calendario.</p>
+                                  </div>
+                                  
+                                  <div className="flex items-center space-x-8">
+                                    <DatePicker value={dateRange} selectionMode="range" manualInput={false} onValueChange={(e) => setDateRange(e.value)}>
+                                        <DatePickerInput placeholder="Seleccionar fechas..." className="text-zinc-900" />
+                                        <DatePickerPortal>
+                                            <DatePickerPositioner>
+                                                <DatePickerPopup>
+                                                    <DatePickerBody>
+                                                        <DatePickerPanel>
+                                                            <DatePickerCalendar />
+                                                        </DatePickerPanel>
+                                                    </DatePickerBody>
+                                                </DatePickerPopup>
+                                            </DatePickerPositioner>
+                                        </DatePickerPortal>
+                                    </DatePicker>
+                                  </div>
                                 </div>
-                                
-                                <div className="flex items-center space-x-8">
-                                  <DatePicker value={dateRange} selectionMode="range" manualInput={false} onValueChange={(e) => setDateRange(e.value)}>
-                                      <DatePickerInput placeholder="Seleccionar fechas..." className="text-zinc-900" />
-                                      <DatePickerPortal>
-                                          <DatePickerPositioner>
-                                              <DatePickerPopup>
-                                                  <DatePickerBody>
-                                                      <DatePickerPanel>
-                                                          <DatePickerCalendar />
-                                                      </DatePickerPanel>
-                                                  </DatePickerBody>
-                                              </DatePickerPopup>
-                                          </DatePickerPositioner>
-                                      </DatePickerPortal>
-                                  </DatePicker>
-                                </div>
-                              </div>
+                              </ErrorBoundary>
                             )}
 
                             {activeComponent === 'quantity' && (
