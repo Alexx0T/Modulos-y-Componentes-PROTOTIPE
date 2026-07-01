@@ -50,7 +50,8 @@ export const AgentChatInterface = ({
       {/* Messages Scroll Area */}
       <div className="flex-1 overflow-y-auto p-6 space-y-4">
         <AnimatePresence initial={false}>
-          {messages.map((msg) => {
+          {(Array.isArray(messages) ? messages : []).map((msg) => {
+            if (!msg || typeof msg !== 'object' || !msg.id) return null
             const isAssistant = msg.role === 'assistant'
             return (
               <motion.div
@@ -68,7 +69,7 @@ export const AgentChatInterface = ({
                       : 'bg-primary text-white shadow-md shadow-primary/10'
                   }`}
                 >
-                  {isAssistant && msg.status === 'executing' && msg.toolExecutions && (
+                  {isAssistant && msg.status === 'executing' && Array.isArray(msg.toolExecutions) && (
                     <div className="mb-2 p-2.5 rounded-lg bg-zinc-950/60 border border-zinc-800 text-xs font-mono space-y-2">
                       <div className="text-primary flex items-center space-x-1.5">
                         <svg className="w-3.5 h-3.5 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -77,21 +78,24 @@ export const AgentChatInterface = ({
                         </svg>
                         <span className="font-bold">Ejecutando herramienta...</span>
                       </div>
-                      {msg.toolExecutions.map((tool, idx) => (
-                        <div key={idx} className="border-t border-zinc-800/80 pt-1.5 mt-1.5">
-                          <div className="text-zinc-300 font-semibold">{tool.name}()</div>
-                          <div className="text-zinc-500 mt-0.5">Parámetros: {JSON.stringify(tool.params)}</div>
-                          <div className="text-zinc-400 bg-zinc-900/60 p-1.5 rounded mt-1 overflow-x-auto text-[11px]">
-                            {tool.output}
+                      {msg.toolExecutions.map((tool, idx) => {
+                        if (!tool || typeof tool !== 'object') return null
+                        return (
+                          <div key={idx} className="border-t border-zinc-800/80 pt-1.5 mt-1.5">
+                            <div className="text-zinc-300 font-semibold">{tool.name || 'tool'}()</div>
+                            <div className="text-zinc-500 mt-0.5">Parámetros: {tool.params ? JSON.stringify(tool.params) : '{}'}</div>
+                            <div className="text-zinc-400 bg-zinc-900/60 p-1.5 rounded mt-1 overflow-x-auto text-[11px] whitespace-pre-wrap">
+                              {tool.output || 'No response output.'}
+                            </div>
                           </div>
-                        </div>
-                      ))}
+                        )
+                      })}
                     </div>
                   )}
 
-                  <div className="text-sm whitespace-pre-wrap leading-relaxed">{msg.content}</div>
+                  <div className="text-sm whitespace-pre-wrap leading-relaxed">{msg.content || ''}</div>
                   <div className="text-[10px] text-zinc-500 text-right mt-1.5 select-none">
-                    {msg.timestamp}
+                    {msg.timestamp || new Date().toLocaleTimeString()}
                   </div>
                 </div>
               </motion.div>

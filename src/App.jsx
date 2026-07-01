@@ -9,8 +9,8 @@ import { DigitalClock } from './components/DigitalClock.jsx'
 import { ComponentCalendar } from './components/ComponentCalendar.jsx'
 import QuantitySelector from './components/QuantitySelector.jsx'
 import { BreathingBackground } from './components/BreathingBackground.jsx'
-import { PrototipeLogo } from '../modulos y componentes/PrototipeLogo/PrototipeLogo.jsx'
-import { DatePicker, DatePickerBody, DatePickerCalendar, DatePickerInput, DatePickerPanel, DatePickerPopup, DatePickerPortal, DatePickerPositioner } from '../modulos y componentes/DatePicker/DatePicker.jsx'
+import { PrototipeLogo } from './components/PrototipeLogo.jsx'
+import { DatePicker, DatePickerBody, DatePickerCalendar, DatePickerInput, DatePickerPanel, DatePickerPopup, DatePickerPortal, DatePickerPositioner } from './components/DatePicker/DatePicker.jsx'
 import { ErrorBoundary } from './components/ErrorBoundary.jsx'
 
 function App() {

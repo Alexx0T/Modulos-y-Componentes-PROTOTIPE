@@ -10,7 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@primeicons/react": "^8.0.0-alpha.1",
+    "@primeicons/react": "^8.0.0-rc.1",
+    "@primereact/core": "^11.0.0-rc.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "framer-motion": "^12.40.0",
