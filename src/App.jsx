@@ -10,6 +10,7 @@ import { ComponentCalendar } from './components/ComponentCalendar.jsx'
 import QuantitySelector from './components/QuantitySelector.jsx'
 import { BreathingBackground } from './components/BreathingBackground.jsx'
 import { PrototipeLogo } from '../modulos y componentes/PrototipeLogo/PrototipeLogo.jsx'
+import { DatePicker, DatePickerBody, DatePickerCalendar, DatePickerInput, DatePickerPanel, DatePickerPopup, DatePickerPortal, DatePickerPositioner } from '../modulos y componentes/DatePicker/DatePicker.jsx'
 
 function App() {
   const {
@@ -39,6 +40,7 @@ function App() {
   const [selectedCategory, setSelectedCategory] = useState('Todos')
   const [isBgModalOpen, setIsBgModalOpen] = useState(false)
   const [simpleTime, setSimpleTime] = useState(new Date().toLocaleTimeString())
+  const [dateRange, setDateRange] = useState(null)
 
   useEffect(() => {
     const clockTimer = setInterval(() => {
@@ -91,6 +93,16 @@ function App() {
             <line x1="16" y1="2" x2="16" y2="6" />
             <line x1="8" y1="2" x2="8" y2="6" />
             <line x1="3" y1="10" x2="21" y2="10" />
+          </svg>
+        )
+      case 'datepicker':
+        return (
+          <svg className="w-8 h-8 text-secondary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <rect x="3" y="4" width="18" height="18" rx="2" />
+            <line x1="16" y1="2" x2="16" y2="6" />
+            <line x1="8" y1="2" x2="8" y2="6" />
+            <line x1="3" y1="10" x2="21" y2="10" />
+            <rect x="8" y="14" width="8" height="4" rx="1" fill="currentColor" opacity="0.3" />
           </svg>
         )
       case 'quantity':
@@ -670,6 +682,32 @@ function App() {
                               <ComponentCalendar components={registeredComponents} />
                             )}
 
+                            {activeComponent === 'datepicker' && (
+                              <div className="p-8 rounded-2xl border border-zinc-900 bg-zinc-900/10 flex flex-col items-center justify-center space-y-6 min-h-[300px]">
+                                <div>
+                                  <h3 className="text-lg font-bold text-zinc-100 text-center">Date Picker Range (Demo)</h3>
+                                  <p className="text-xs text-zinc-400 text-center mt-1">Selecciona un rango de fechas en el calendario.</p>
+                                </div>
+                                
+                                <div className="flex items-center space-x-8">
+                                  <DatePicker value={dateRange} selectionMode="range" manualInput={false} onValueChange={(e) => setDateRange(e.value)}>
+                                      <DatePickerInput placeholder="Seleccionar fechas..." className="text-zinc-900" />
+                                      <DatePickerPortal>
+                                          <DatePickerPositioner>
+                                              <DatePickerPopup>
+                                                  <DatePickerBody>
+                                                      <DatePickerPanel>
+                                                          <DatePickerCalendar />
+                                                      </DatePickerPanel>
+                                                  </DatePickerBody>
+                                              </DatePickerPopup>
+                                          </DatePickerPositioner>
+                                      </DatePickerPortal>
+                                  </DatePicker>
+                                </div>
+                              </div>
+                            )}
+
                             {activeComponent === 'quantity' && (
                               <div className="p-8 rounded-2xl border border-zinc-900 bg-zinc-900/10 flex flex-col items-center justify-center space-y-6 min-h-[300px]">
                                 <div>
@@ -902,6 +940,13 @@ function App() {
                               <div className="prose prose-invert max-w-none space-y-4">
                                 <h3 className="text-lg font-bold text-zinc-100">Guía de ComponentCalendar</h3>
                                 <p className="text-sm text-zinc-400">Calendario de cuadrícula interactiva que despliega los lanzamientos e hitos del catálogo en base a metadatos estructurados.</p>
+                              </div>
+                            )}
+
+                            {activeComponent === 'datepicker' && (
+                              <div className="prose prose-invert max-w-none space-y-6">
+                                <h3 className="text-xl font-bold text-zinc-100">Date Picker (Range Mode)</h3>
+                                <p className="text-sm text-zinc-400">Componente extraído de PrimeReact Headless y adaptado a Tailwind CSS para seleccionar rangos de fechas. Construido con arquitectura de sub-componentes (Root, Input, Portal, Popup, etc.).</p>
                               </div>
                             )}
 

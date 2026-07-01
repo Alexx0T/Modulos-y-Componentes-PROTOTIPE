@@ -61,7 +61,8 @@ export const useCatalogStore = create((set) => ({
     { id: 'quantity', name: 'Quantity Selector', date: '2026-06-06', description: 'Selector de cantidad atómico con botones circulares y límites de stock.', category: 'UI Atomic' },
     { id: 'tapshield', name: 'Tap-Shield', date: '2026-06-27', description: 'Modal seguro con React Portals y backdrop oscurecido para mobile-first.', category: 'UI Atomic' },
     { id: 'background', name: 'Breathing Background', date: '2026-06-28', description: 'Fondo respirable interactivo con optimizaciones GPU y colores HSL dinámicos.', category: 'UI Background' },
-    { id: 'prototipelogo', name: 'Prototipe Logo 3D', date: '2026-06-28', description: 'Logo 3D interactivo con tracking de mouse y sombras SVG puras.', category: 'Branding' }
+    { id: 'prototipelogo', name: 'Prototipe Logo 3D', date: '2026-06-28', description: 'Logo 3D interactivo con tracking de mouse y sombras SVG puras.', category: 'Branding' },
+    { id: 'datepicker', name: 'Date Picker Range', date: '2026-06-30', description: 'Selector de fechas con soporte para rangos, estilos PrimeReact y Tailwind CSS.', category: 'UI Atomic' }
   ],
   
   backgroundConfig: {
